@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AdCoin</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#07111f;color:#fff;min-height:100vh}
+.app{max-width:480px;margin:auto;padding:18px 18px 90px}
+.header{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#00d4ff,#6c4cff);display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:bold}
+.user-info h3{font-size:17px}.user-info p{color:#8c9bb0;font-size:13px;margin-top:3px}
+.balance{background:linear-gradient(135deg,#1769ff,#743cff);border-radius:24px;padding:25px;text-align:center;box-shadow:0 12px 35px #324fff40}
+.balance small{color:#dfe7ff}.balance h1{font-size:40px;margin:9px 0}.coin{font-size:16px}
+.ad-card{margin-top:18px;background:#101d2d;border:1px solid #1e3147;border-radius:20px;padding:20px}
+.ad-card h2{font-size:19px;margin-bottom:7px}.ad-card p{color:#91a1b5;line-height:1.5;font-size:14px;margin-bottom:18px}
+button{border:0;cursor:pointer}.watch{width:100%;padding:15px;border-radius:14px;background:#00d084;color:#001b11;font-size:16px;font-weight:bold}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.card{background:#101d2d;border:1px solid #1e3147;padding:18px;border-radius:18px}.card span{font-size:24px}.card h3{margin-top:9px;font-size:15px}.card p{color:#8495aa;font-size:12px;margin-top:5px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#0b1726;border-top:1px solid #1d2c3e;display:flex;justify-content:center;gap:45px;padding:12px}.nav button{background:none;color:#8393a7;font-size:12px}.nav button.active{color:#fff}
+.toast{position:fixed;left:50%;bottom:75px;transform:translateX(-50%);background:#172536;padding:12px 18px;border-radius:12px;display:none;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="avatar" id="avatar">A</div>
+    <div class="user-info"><h3 id="username">Welcome</h3><p>Telegram Mini App</p></div>
+  </div>
+  <div class="balance"><small>Your Balance</small><h1 id="balance">0</h1><div class="coin">🪙 Coins</div></div>
+  <div class="ad-card">
+    <h2>🎁 Watch & Earn</h2>
+    <p>Watch an advertisement and earn coins. AdsGram will be connected in the next step.</p>
+    <button class="watch" onclick="watchAd()">▶ Watch Advertisement</button>
+  </div>
+  <div class="cards">
+    <div class="card"><span>👥</span><h3>Referral</h3><p>Invite friends and earn.</p></div>
+    <div class="card"><span>💸</span><h3>Withdraw</h3><p>Coming soon.</p></div>
+  </div>
+</div>
+<div class="nav">
+<button class="active">🏠<br>Home</button><button onclick="comingSoon()">👥<br>Refer</button>
+<button onclick="comingSoon()">💰<br>Withdraw</button><button onclick="comingSoon()">⚙️<br>Settings</button>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const firebaseConfig={
+apiKey:"AIzaSyDnQPm57HTYnaglTEMj0Ez1Vm6NsZ21nyY",
+authDomain:"unique-tour-6f65d.firebaseapp.com",
+databaseURL:"https://unique-tour-6f65d-default-rtdb.firebaseio.com",
+projectId:"unique-tour-6f65d",
+storageBucket:"unique-tour-6f65d.firebasestorage.app",
+messagingSenderId:"314084431584",
+appId:"1:314084431584:web:249c97883913a2199de285",
+measurementId:"G-Q95BZS765X"
+};
+firebase.initializeApp(firebaseConfig);const db=firebase.database();
+const tg=window.Telegram.WebApp;tg.ready();tg.expand();
+const u=tg.initDataUnsafe?.user;let userId="demo_"+Date.now(),userName="Guest";
+if(u){userId=String(u.id);userName=u.first_name||u.username||"Telegram User";document.getElementById("username").innerText=userName;document.getElementById("avatar").innerText=userName.charAt(0).toUpperCase();}
+function loadUser(){db.ref("users/"+userId).once("value").then(s=>{if(s.exists()){document.getElementById("balance").innerText=s.val().balance||0}else{db.ref("users/"+userId).set({name:userName,telegramId:userId,balance:0,totalAds:0,createdAt:Date.now()});}}).catch(console.log)}
+function watchAd(){showToast("AdsGram will be connected next 🚀")}
+function showToast(t){const x=document.getElementById("toast");x.innerText=t;x.style.display="block";setTimeout(()=>x.style.display="none",2500)}
+function comingSoon(){showToast("Coming soon 🚀")}loadUser();
+</script>
+</body>
+</html>
