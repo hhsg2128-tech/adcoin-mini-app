@@ -1,70 +1,312 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>AdCoin</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#07111f;color:#fff;min-height:100vh}
-.app{max-width:480px;margin:auto;padding:18px 18px 90px}
-.header{display:flex;align-items:center;gap:12px;margin-bottom:22px}
-.avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#00d4ff,#6c4cff);display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:bold}
-.user-info h3{font-size:17px}.user-info p{color:#8c9bb0;font-size:13px;margin-top:3px}
-.balance{background:linear-gradient(135deg,#1769ff,#743cff);border-radius:24px;padding:25px;text-align:center;box-shadow:0 12px 35px #324fff40}
-.balance small{color:#dfe7ff}.balance h1{font-size:40px;margin:9px 0}.coin{font-size:16px}
-.ad-card{margin-top:18px;background:#101d2d;border:1px solid #1e3147;border-radius:20px;padding:20px}
-.ad-card h2{font-size:19px;margin-bottom:7px}.ad-card p{color:#91a1b5;line-height:1.5;font-size:14px;margin-bottom:18px}
-button{border:0;cursor:pointer}.watch{width:100%;padding:15px;border-radius:14px;background:#00d084;color:#001b11;font-size:16px;font-weight:bold}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.card{background:#101d2d;border:1px solid #1e3147;padding:18px;border-radius:18px}.card span{font-size:24px}.card h3{margin-top:9px;font-size:15px}.card p{color:#8495aa;font-size:12px;margin-top:5px}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#0b1726;border-top:1px solid #1d2c3e;display:flex;justify-content:center;gap:45px;padding:12px}.nav button{background:none;color:#8393a7;font-size:12px}.nav button.active{color:#fff}
-.toast{position:fixed;left:50%;bottom:75px;transform:translateX(-50%);background:#172536;padding:12px 18px;border-radius:12px;display:none;white-space:nowrap}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AdCoin · Telegram Mini App</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;font-family:'Inter',system-ui,Arial,sans-serif}
+    body{background:#07111f;color:#fff;padding-bottom:70px}
+    .app{max-width:480px;margin:auto;padding:18px 16px 90px}
+    .top{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+    .avatar{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#00d4ff,#7347ff);font-weight:700;font-size:18px}
+    .sub,.muted{color:#8ea0b5;font-size:13px}
+    .balance,.card,.tile{background:#0e1b2b;border:1px solid #1c3048;border-radius:20px}
+    .balance{margin-top:18px;padding:24px;text-align:center;background:linear-gradient(135deg,#1769ff,#743cff)}
+    .balance h1{font-size:42px;margin:8px;font-weight:800}
+    .card{margin-top:16px;padding:19px}
+    .btn{width:100%;padding:14px;margin-top:14px;border:0;border-radius:14px;font-weight:700;font-size:15px;cursor:pointer;transition:opacity .2s}
+    .btn:active{opacity:.8}
+    .primary{background:#00d084;color:#07111f}
+    .secondary{background:#17283b;color:#fff}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+    .tile{padding:16px;text-align:center}
+    .page{display:none}
+    .page.active{display:block}
+    .nav{position:fixed;bottom:0;left:0;right:0;background:#091624;border-top:1px solid #1c3048;display:flex;justify-content:space-around;padding:10px;max-width:480px;margin:auto}
+    .nav button{background:none;border:0;color:#8293a8;font-size:11px;font-weight:600;cursor:pointer;padding:4px 8px;border-radius:8px;transition:color .2s}
+    .nav button.active{color:#fff}
+    input,select{width:100%;padding:12px;margin-top:7px;background:#0a1624;color:#fff;border:1px solid #29405a;border-radius:10px;font-size:14px}
+    input:focus,select:focus{outline:none;border-color:#1769ff}
+    .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1c3048;color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap}
+    .toast.show{opacity:1}
+    .referral-box{background:#0a1624;border:1px dashed #29405a;border-radius:12px;padding:12px;margin-top:8px;display:flex;align-items:center;gap:8px;word-break:break-all;font-size:12px;color:#8ea0b5}
+  </style>
 </head>
 <body>
 <div class="app">
-  <div class="header">
+  <!-- Header -->
+  <div class="top">
     <div class="avatar" id="avatar">A</div>
-    <div class="user-info"><h3 id="username">Welcome</h3><p>Telegram Mini App</p></div>
+    <div>
+      <b id="name">Guest</b>
+      <div class="sub">AdCoin Mini App</div>
+    </div>
   </div>
-  <div class="balance"><small>Your Balance</small><h1 id="balance">0</h1><div class="coin">🪙 Coins</div></div>
-  <div class="ad-card">
-    <h2>🎁 Watch & Earn</h2>
-    <p>Watch an advertisement and earn coins. AdsGram will be connected in the next step.</p>
-    <button class="watch" onclick="watchAd()">▶ Watch Advertisement</button>
-  </div>
-  <div class="cards">
-    <div class="card"><span>👥</span><h3>Referral</h3><p>Invite friends and earn.</p></div>
-    <div class="card"><span>💸</span><h3>Withdraw</h3><p>Coming soon.</p></div>
-  </div>
+
+  <!-- HOME -->
+  <section id="home" class="page active">
+    <div class="balance">
+      <small>Available Balance</small>
+      <h1 id="balance">0</h1>
+      🪙 Coins
+    </div>
+    <div class="card">
+      <h2>📺 Watch & Earn</h2>
+      <p class="muted">Ad reward will be added only after a verified advertisement is completed.</p>
+      <button class="btn primary" onclick="watchAd()">▶ Watch Ad</button>
+    </div>
+    <div class="card">
+      <h2>🎁 Daily Bonus</h2>
+      <p class="muted">Daily bonus will be secured by the backend.</p>
+      <button class="btn secondary" onclick="daily()">Claim Daily Bonus</button>
+    </div>
+    <div class="grid">
+      <div class="tile">👥<br><b id="refs">0</b><br><span class="muted">Referrals</span></div>
+      <div class="tile">📺<br><b id="ads">0</b><br><span class="muted">Ads watched</span></div>
+    </div>
+  </section>
+
+  <!-- REFER -->
+  <section id="refer" class="page">
+    <div class="card">
+      <h2>👥 Invite Friends</h2>
+      <p class="muted">Share your referral link. Earn 50 coins per friend.</p>
+      <div class="referral-box" id="refBox">https://t.me/YourBot?start=...</div>
+      <button class="btn primary" onclick="share()">📤 Share Referral</button>
+    </div>
+  </section>
+
+  <!-- WITHDRAW -->
+  <section id="withdraw" class="page">
+    <div class="card">
+      <h2>💸 Withdraw</h2>
+      <p class="muted">Withdrawals will be enabled after the secure backend is connected.</p>
+      <select id="method">
+        <option>bKash</option>
+        <option>Nagad</option>
+        <option>USDT</option>
+      </select>
+      <input id="account" placeholder="Account / Wallet number">
+      <input id="amount" type="number" placeholder="Amount (min 5000 coins)">
+      <button class="btn primary" onclick="wd()">Submit Request</button>
+    </div>
+  </section>
+
+  <!-- HISTORY -->
+  <section id="history" class="page">
+    <div class="card">
+      <h2>📜 History</h2>
+      <p class="muted" id="historyText">No transactions yet.</p>
+    </div>
+  </section>
+
+  <!-- PROFILE -->
+  <section id="profile" class="page">
+    <div class="card">
+      <h2>👤 Profile</h2>
+      <p class="muted">Name</p>
+      <b id="pname">Guest</b>
+      <p class="muted" style="margin-top:12px">Telegram ID</p>
+      <b id="pid">—</b>
+      <p class="muted" style="margin-top:12px">Member since</p>
+      <b id="pjoin">—</b>
+    </div>
+  </section>
 </div>
-<div class="nav">
-<button class="active">🏠<br>Home</button><button onclick="comingSoon()">👥<br>Refer</button>
-<button onclick="comingSoon()">💰<br>Withdraw</button><button onclick="comingSoon()">⚙️<br>Settings</button>
-</div>
+
+<!-- Bottom Navigation -->
+<nav class="nav">
+  <button class="active" onclick="pg('home',this)">🏠<br>Home</button>
+  <button onclick="pg('refer',this)">👥<br>Refer</button>
+  <button onclick="pg('withdraw',this)">💸<br>Withdraw</button>
+  <button onclick="pg('history',this)">📜<br>History</button>
+  <button onclick="pg('profile',this)">👤<br>Profile</button>
+</nav>
+
+<!-- Toast -->
 <div class="toast" id="toast"></div>
+
 <script>
-const firebaseConfig={
-apiKey:"AIzaSyDnQPm57HTYnaglTEMj0Ez1Vm6NsZ21nyY",
-authDomain:"unique-tour-6f65d.firebaseapp.com",
-databaseURL:"https://unique-tour-6f65d-default-rtdb.firebaseio.com",
-projectId:"unique-tour-6f65d",
-storageBucket:"unique-tour-6f65d.firebasestorage.app",
-messagingSenderId:"314084431584",
-appId:"1:314084431584:web:249c97883913a2199de285",
-measurementId:"G-Q95BZS765X"
-};
-firebase.initializeApp(firebaseConfig);const db=firebase.database();
-const tg=window.Telegram.WebApp;tg.ready();tg.expand();
-const u=tg.initDataUnsafe?.user;let userId="demo_"+Date.now(),userName="Guest";
-if(u){userId=String(u.id);userName=u.first_name||u.username||"Telegram User";document.getElementById("username").innerText=userName;document.getElementById("avatar").innerText=userName.charAt(0).toUpperCase();}
-function loadUser(){db.ref("users/"+userId).once("value").then(s=>{if(s.exists()){document.getElementById("balance").innerText=s.val().balance||0}else{db.ref("users/"+userId).set({name:userName,telegramId:userId,balance:0,totalAds:0,createdAt:Date.now()});}}).catch(console.log)}
-function watchAd(){showToast("AdsGram will be connected next 🚀")}
-function showToast(t){const x=document.getElementById("toast");x.innerText=t;x.style.display="block";setTimeout(()=>x.style.display="none",2500)}
-function comingSoon(){showToast("Coming soon 🚀")}loadUser();
+  // ---------- FIREBASE ----------
+  const firebaseConfig = {
+    apiKey: "AIzaSyDnQPm57HTYnaglTEMj0Ez1Vm6NsZ21nyY",
+    authDomain: "unique-tour-6f65d.firebaseapp.com",
+    databaseURL: "https://unique-tour-6f65d-default-rtdb.firebaseio.com",
+    projectId: "unique-tour-6f65d",
+    storageBucket: "unique-tour-6f65d.firebasestorage.app",
+    messagingSenderId: "314084431584",
+    appId: "1:314084431584:web:249c97883913a2199de285",
+    measurementId: "G-Q95BZS765X"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // ---------- TELEGRAM ----------
+  const tg = window.Telegram.WebApp;
+  tg.ready();
+  tg.expand();
+
+  const u = tg.initDataUnsafe?.user;
+  const uid = u ? String(u.id) : "demo_" + Date.now();
+  const name = u ? (u.first_name || u.username || "Telegram User") : "Guest";
+  const username = u?.username || "";
+
+  // UI refs
+  const $ = id => document.getElementById(id);
+
+  // Set UI
+  $("name").textContent = name;
+  $("pname").textContent = name;
+  $("pid").textContent = u ? uid : "Demo";
+  $("avatar").textContent = name[0].toUpperCase();
+
+  // Referral link
+  const refLink = `https://t.me/YourBot?start=${uid}`;
+  $("refBox").textContent = refLink;
+
+  // ---------- TOAST ----------
+  function toast(msg) {
+    const t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove("show"), 2200);
+  }
+
+  // ---------- PAGE NAV ----------
+  function pg(id, btn) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    $(id).classList.add("active");
+    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  }
+
+  // ---------- ACTIONS ----------
+  function watchAd() {
+    toast("⚠️ Ads provider not connected — no fake reward");
+  }
+
+  function daily() {
+    toast("🎁 Daily bonus enabled after backend security");
+  }
+
+  function wd() {
+    const method = $("method").value;
+    const account = $("account").value.trim();
+    const amount = Number($("amount").value);
+
+    if (!account) return toast("❌ Enter account / wallet");
+    if (!amount || amount < 5000) return toast("❌ Minimum withdrawal: 5000 coins");
+    toast("⏳ Secure withdrawal backend not connected yet");
+  }
+
+  function share() {
+    const link = refLink;
+    if (navigator.share) {
+      navigator.share({ title: "AdCoin", text: "Join AdCoin and earn!", url: link })
+        .catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(link).then(() => toast("📋 Referral link copied"));
+    } else {
+      toast("📋 Copy manually: " + link);
+    }
+  }
+
+  // ---------- FIREBASE USER SYNC ----------
+  const userRef = db.ref("users/" + uid);
+
+  userRef.once("value")
+    .then(snap => {
+      if (!snap.exists()) {
+        // New user
+        return userRef.set({
+          name: name,
+          username: username,
+          telegramId: uid,
+          balance: 0,
+          totalAds: 0,
+          referrals: 0,
+          createdAt: Date.now(),
+          lastDaily: null,
+          history: []
+        }).then(() => {
+          // Re-read to update UI
+          return userRef.once("value");
+        });
+      }
+      return snap;
+    })
+    .then(snap => {
+      const d = snap.val() || {};
+      $("balance").textContent = d.balance || 0;
+      $("ads").textContent = d.totalAds || 0;
+      $("refs").textContent = d.referrals || 0;
+
+      if (d.createdAt) {
+        const date = new Date(d.createdAt);
+        $("pjoin").textContent = date.toLocaleDateString("en-GB", {
+          day: "numeric", month: "short", year: "numeric"
+        });
+      } else {
+        $("pjoin").textContent = "—";
+      }
+
+      // History
+      if (d.history && d.history.length) {
+        const recent = d.history.slice(-5).reverse();
+        $("historyText").innerHTML = recent.map(h =>
+          `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1c3048">
+            <span>${h.type || "tx"}</span>
+            <span style="color:${h.amount >= 0 ? '#00d084' : '#ff6b6b'}">${h.amount >= 0 ? '+' : ''}${h.amount}</span>
+          </div>`
+        ).join("");
+      }
+    })
+    .catch(err => {
+      console.warn("Firebase error:", err);
+      toast("⚠️ Offline mode — data not saved");
+    });
+
+  // ---------- LIVE BALANCE LISTENER ----------
+  userRef.on("value", snap => {
+    const d = snap.val();
+    if (d) {
+      $("balance").textContent = d.balance || 0;
+      $("ads").textContent = d.totalAds || 0;
+      $("refs").textContent = d.referrals || 0;
+    }
+  });
+
+  // ---------- AUTO-DETECT REFERRAL (start param) ----------
+  const startParam = tg.initDataUnsafe?.start_param;
+  if (startParam && startParam !== uid) {
+    // Check if referrer exists
+    db.ref("users/" + startParam).once("value").then(snap => {
+      if (snap.exists()) {
+        // Increment referral count for referrer
+        db.ref("users/" + startParam + "/referrals").transaction(c => (c || 0) + 1);
+        // Bonus for referrer (50 coins)
+        db.ref("users/" + startParam + "/balance").transaction(b => (b || 0) + 50);
+        // Add history for referrer
+        db.ref("users/" + startParam + "/history").push({
+          type: "referral",
+          amount: 50,
+          from: name,
+          at: Date.now()
+        });
+        toast("🎉 Referral bonus applied!");
+      }
+    }).catch(() => {});
+  }
+
+  // Prevent double-tap zoom on buttons
+  document.querySelectorAll("button").forEach(b => {
+    b.addEventListener("touchstart", () => {}, { passive: true });
+  });
 </script>
 </body>
 </html>
