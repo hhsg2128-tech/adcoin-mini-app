@@ -72,11 +72,7 @@ padding:25px;
 text-align:center;
 border-radius:22px;
 background:linear-gradient(135deg,#1769ff,#743cff);
-box-shadow:0 10px 30px rgba(40,80,255,.20);
-}
-
-.balance small{
-opacity:.85;
+box-shadow:0 10px 30px rgba(40,80,255,.2);
 }
 
 .balance h1{
@@ -154,7 +150,6 @@ border:0;
 color:#8293a8;
 font-size:11px;
 padding:5px;
-cursor:pointer;
 }
 
 .nav button.active{
@@ -229,7 +224,7 @@ font-weight:bold;
 }
 
 .hidden{
-display:none !important;
+display:none!important;
 }
 
 </style>
@@ -244,15 +239,11 @@ display:none !important;
 
 <div class="top">
 
-<div class="avatar" id="avatar">
-A
-</div>
+<div class="avatar" id="avatar">A</div>
 
 <div>
 
-<div class="name" id="name">
-Guest
-</div>
+<div class="name" id="name">Guest</div>
 
 <div class="sub">
 AdCoin Mini App
@@ -263,7 +254,7 @@ AdCoin Mini App
 </div>
 
 
-<!-- BAN -->
+<!-- BAN SCREEN -->
 
 <div id="banBox" class="banned hidden">
 
@@ -296,7 +287,7 @@ target="_blank"
 </div>
 
 
-<!-- NORMAL APP -->
+<!-- APP -->
 
 <div id="normalApp">
 
@@ -307,29 +298,23 @@ target="_blank"
 
 <div class="balance">
 
-<small>
-Available Balance
-</small>
+<small>Available Balance</small>
 
-<h1 id="balance">
-0
-</h1>
+<h1 id="balance">0</h1>
 
 🪙 Coins
 
 </div>
 
 
-<!-- WATCH AD -->
+<!-- ADS -->
 
 <div class="card">
 
-<h2>
-📺 Watch & Earn
-</h2>
+<h2>📺 Watch & Earn</h2>
 
 <p class="sub">
-Watch a rewarded advertisement.
+Watch a rewarded advertisement and earn coins.
 </p>
 
 <button
@@ -343,30 +328,24 @@ onclick="watchAd()"
 <div
 id="adMessage"
 class="message hidden"
->
-</div>
+></div>
 
 </div>
 
 
-<!-- DAILY BONUS -->
+<!-- DAILY ADS -->
 
 <div class="card">
 
-<h2>
-🎁 Daily Bonus
-</h2>
+<h2>📊 Today's Ads</h2>
 
 <p class="sub">
-Claim your daily reward.
+Maximum 50 rewarded ads per day.
 </p>
 
-<button
-class="btn secondary"
-onclick="dailyBonus()"
->
-🎁 Claim Daily Bonus
-</button>
+<h2>
+<span id="todayAds">0</span> / 50
+</h2>
 
 </div>
 
@@ -377,13 +356,9 @@ onclick="dailyBonus()"
 
 <div class="tile">
 
-👥
+👥<br>
 
-<br>
-
-<b id="refs">
-0
-</b>
+<b id="refs">0</b>
 
 <br>
 
@@ -396,18 +371,14 @@ Referrals
 
 <div class="tile">
 
-📺
+📺<br>
 
-<br>
-
-<b id="ads">
-0
-</b>
+<b id="ads">0</b>
 
 <br>
 
 <span class="sub">
-Ads Watched
+Total Ads
 </span>
 
 </div>
@@ -423,18 +394,13 @@ Ads Watched
 
 <div class="card">
 
-<h2>
-👥 Invite Friends
-</h2>
+<h2>👥 Invite Friends</h2>
 
 <p class="sub">
 Invite friends and earn referral rewards.
 </p>
 
-<input
-id="refLink"
-readonly
->
+<input id="refLink" readonly>
 
 <button
 class="btn primary"
@@ -454,13 +420,7 @@ onclick="copyReferral()"
 
 <div class="card">
 
-<h2>
-💸 Withdraw
-</h2>
-
-<p class="sub">
-Minimum withdrawal is controlled by Admin.
-</p>
+<h2>💸 Withdraw</h2>
 
 <select id="withdrawMethod">
 
@@ -488,6 +448,11 @@ onclick="withdraw()"
 💸 Submit Withdrawal
 </button>
 
+<div
+id="withdrawMessage"
+class="message hidden"
+></div>
+
 </div>
 
 </section>
@@ -499,12 +464,10 @@ onclick="withdraw()"
 
 <div class="card">
 
-<h2>
-📜 History
-</h2>
+<h2>📜 History</h2>
 
 <p class="sub">
-Your transaction history will appear here.
+Transaction history will appear here.
 </p>
 
 <div id="historyList">
@@ -522,25 +485,17 @@ No transactions yet.
 
 <div class="card">
 
-<h2>
-👤 Profile
-</h2>
+<h2>👤 Profile</h2>
 
-<p class="sub">
-Name
-</p>
+<p class="sub">Name</p>
 
-<b id="profileName">
-Guest
-</b>
+<b id="profileName">Guest</b>
 
 <p class="sub" style="margin-top:20px">
 Telegram ID
 </p>
 
-<b id="telegramId">
--
-</b>
+<b id="telegramId">-</b>
 
 </div>
 
@@ -557,41 +512,31 @@ Telegram ID
 class="active"
 onclick="openPage('home',this)"
 >
-🏠
-<br>
-Home
+🏠<br>Home
 </button>
 
 <button
 onclick="openPage('refer',this)"
 >
-👥
-<br>
-Refer
+👥<br>Refer
 </button>
 
 <button
 onclick="openPage('withdraw',this)"
 >
-💸
-<br>
-Withdraw
+💸<br>Withdraw
 </button>
 
 <button
 onclick="openPage('history',this)"
 >
-📜
-<br>
-History
+📜<br>History
 </button>
 
 <button
 onclick="openPage('profile',this)"
 >
-👤
-<br>
-Profile
+👤<br>Profile
 </button>
 
 </nav>
@@ -601,15 +546,13 @@ Profile
 
 <script>
 
-/* =========================================
+/* =================================================
    TELEGRAM
-========================================= */
+================================================= */
 
-const tg =
-window.Telegram.WebApp;
+const tg = window.Telegram.WebApp;
 
 tg.ready();
-
 tg.expand();
 
 
@@ -624,8 +567,7 @@ let userName;
 
 if(telegramUser){
 
-userId =
-String(telegramUser.id);
+userId = String(telegramUser.id);
 
 userName =
 telegramUser.first_name ||
@@ -634,18 +576,16 @@ telegramUser.username ||
 
 }else{
 
-userId =
-"demo_user";
+userId = "demo_user";
 
-userName =
-"Guest";
+userName = "Guest";
 
 }
 
 
-/* =========================================
+/* =================================================
    FIREBASE
-========================================= */
+================================================= */
 
 const firebaseConfig = {
 
@@ -676,76 +616,54 @@ measurementId:
 };
 
 
-firebase.initializeApp(
-firebaseConfig
-);
+firebase.initializeApp(firebaseConfig);
 
-const db =
-firebase.database();
+const db = firebase.database();
 
 
-/* =========================================
-   UI
-========================================= */
+/* =================================================
+   USER UI
+================================================= */
 
-document.getElementById("name")
-.textContent =
+document.getElementById("name").textContent =
 userName;
 
-document.getElementById("profileName")
-.textContent =
+document.getElementById("profileName").textContent =
 userName;
 
-document.getElementById("telegramId")
-.textContent =
-telegramUser
-?
-userId
-:
-"Demo";
+document.getElementById("telegramId").textContent =
+telegramUser ? userId : "Demo";
 
-document.getElementById("avatar")
-.textContent =
-userName
-.charAt(0)
-.toUpperCase();
+document.getElementById("avatar").textContent =
+userName.charAt(0).toUpperCase();
 
 
-/* =========================================
+/* =================================================
    REFERRAL
-========================================= */
+================================================= */
 
-document.getElementById("refLink")
-.value =
-"https://t.me/free_erning_bot?start=" +
-userId;
+document.getElementById("refLink").value =
+"https://t.me/free_erning_bot?start=" + userId;
 
 
-/* =========================================
-   USER
-========================================= */
+/* =================================================
+   USER DATABASE
+================================================= */
 
 let isBanned = false;
 
 const userRef =
-db.ref(
-"users/" + userId
-);
+db.ref("users/" + userId);
 
 
-userRef.on(
-"value",
-function(snapshot){
+userRef.on("value", function(snapshot){
 
-const user =
-snapshot.val() || {};
+const user = snapshot.val() || {};
 
 
 /* BAN */
 
-if(
-user.banned === true
-){
+if(user.banned === true){
 
 showBanScreen(
 user.banReason
@@ -765,39 +683,25 @@ hideBanScreen();
 
 /* BALANCE */
 
-document.getElementById(
-"balance"
-).textContent =
-Number(
-user.balance || 0
-);
+document.getElementById("balance").textContent =
+Number(user.balance || 0);
 
 
-/* ADS */
+/* TOTAL ADS */
 
-document.getElementById(
-"ads"
-).textContent =
-Number(
-user.totalAds || 0
-);
+document.getElementById("ads").textContent =
+Number(user.totalAds || 0);
 
 
 /* REFERRALS */
 
-document.getElementById(
-"refs"
-).textContent =
-Number(
-user.referrals || 0
-);
+document.getElementById("refs").textContent =
+Number(user.referrals || 0);
 
 
 /* CREATE USER */
 
-if(
-!snapshot.exists()
-){
+if(!snapshot.exists()){
 
 userRef.set({
 
@@ -815,8 +719,7 @@ banned:false,
 
 banReason:"",
 
-createdAt:
-firebase.database.ServerValue.TIMESTAMP
+createdAt:Date.now()
 
 });
 
@@ -825,59 +728,50 @@ firebase.database.ServerValue.TIMESTAMP
 });
 
 
-/* =========================================
-   BAN SCREEN
-========================================= */
+/* =================================================
+   BAN
+================================================= */
 
 function showBanScreen(reason){
 
 isBanned = true;
-
 
 document
 .getElementById("normalApp")
 .classList
 .add("hidden");
 
-
 document
 .getElementById("banBox")
 .classList
 .remove("hidden");
-
 
 document
 .getElementById("bottomNav")
 .classList
 .add("hidden");
 
-
 document
 .getElementById("banReason")
 .textContent =
-reason ||
-"No reason provided.";
+reason || "No reason provided.";
 
 }
 
 
 function hideBanScreen(){
 
-if(
-!isBanned
-){
+if(!isBanned){
 
 document
 .getElementById("banBox")
 .classList
 .add("hidden");
 
-
 document
 .getElementById("normalApp")
 .classList
 .remove("hidden");
-
 
 document
 .getElementById("bottomNav")
@@ -888,10 +782,6 @@ document
 
 }
 
-
-/* =========================================
-   BAN CHECK
-========================================= */
 
 function checkBan(){
 
@@ -899,7 +789,7 @@ if(isBanned){
 
 alert(
 "🚫 Your account is banned.\n\n" +
-"Contact @tohid14."
+"Contact @tohid14 for support."
 );
 
 return true;
@@ -911,31 +801,20 @@ return false;
 }
 
 
-/* =========================================
+/* =================================================
    NAVIGATION
-========================================= */
+================================================= */
 
-function openPage(
-page,
-button
-){
+function openPage(page,button){
 
-if(
-checkBan()
-){
-
-return;
-
-}
+if(checkBan()) return;
 
 
 document
 .querySelectorAll(".page")
-.forEach(
-function(el){
+.forEach(function(el){
 
-el.classList
-.remove("active");
+el.classList.remove("active");
 
 });
 
@@ -948,32 +827,24 @@ document
 
 document
 .querySelectorAll(".nav button")
-.forEach(
-function(el){
+.forEach(function(el){
 
-el.classList
-.remove("active");
+el.classList.remove("active");
 
 });
 
 
-button.classList
-.add("active");
+button.classList.add("active");
 
 }
 
 
-/* =========================================
+/* =================================================
    ADSGRAM
-========================================= */
+================================================= */
 
 /*
-IMPORTANT
-
-This is the working Block ID
-you gave me.
-
-It MUST remain a STRING.
+   YOUR WORKING ADSGRAM BLOCK ID
 */
 
 const BLOCK_ID = "50759";
@@ -983,11 +854,6 @@ let adController = null;
 
 let adLoading = false;
 
-
-/*
-AdsGram is already loaded
-in <head>.
-*/
 
 try{
 
@@ -999,56 +865,170 @@ blockId: BLOCK_ID
 });
 
 console.log(
-"AdsGram initialized",
+"AdsGram initialized:",
 BLOCK_ID
 );
 
 }catch(error){
 
 console.error(
-"AdsGram initialization error:",
+"AdsGram init error:",
 error
 );
 
 }
 
 
-/* =========================================
+/* =================================================
+   DAILY COUNTER
+================================================= */
+
+function todayKey(){
+
+return new Date()
+.toISOString()
+.slice(0,10);
+
+}
+
+
+function getTodayAds(){
+
+const today =
+todayKey();
+
+const savedDate =
+localStorage.getItem(
+"adcoin_date"
+);
+
+
+if(savedDate !== today){
+
+localStorage.setItem(
+"adcoin_date",
+today
+);
+
+localStorage.setItem(
+"adcoin_today_ads",
+"0"
+);
+
+return 0;
+
+}
+
+
+return Number(
+localStorage.getItem(
+"adcoin_today_ads"
+) || 0
+);
+
+}
+
+
+function setTodayAds(value){
+
+localStorage.setItem(
+"adcoin_date",
+todayKey()
+);
+
+localStorage.setItem(
+"adcoin_today_ads",
+String(value)
+);
+
+document.getElementById(
+"todayAds"
+).textContent =
+value;
+
+}
+
+
+setTodayAds(
+getTodayAds()
+);
+
+
+/* =================================================
    WATCH AD
-========================================= */
+================================================= */
 
 async function watchAd(){
 
-if(
-checkBan()
-){
+if(checkBan()) return;
 
-return;
-
-}
+if(adLoading) return;
 
 
-if(
-adLoading
-){
-
-return;
-
-}
-
-
-if(
-!adController
-){
+if(!adController){
 
 alert(
-"AdsGram is not ready. Please reopen the Mini App."
+"AdsGram is not ready.\nPlease reopen the Mini App."
 );
 
 return;
 
 }
 
+
+/* DAILY LIMIT */
+
+const adsToday =
+getTodayAds();
+
+
+if(adsToday >= 50){
+
+alert(
+"🚫 Today's ad limit reached.\n\n" +
+"Come back tomorrow."
+);
+
+return;
+
+}
+
+
+/* COOLDOWN */
+
+const lastAd =
+Number(
+localStorage.getItem(
+"adcoin_last_ad"
+) || 0
+);
+
+
+const cooldown = 10000;
+
+const difference =
+Date.now() - lastAd;
+
+
+if(difference < cooldown){
+
+const remaining =
+Math.ceil(
+(cooldown - difference) / 1000
+);
+
+alert(
+"⏳ Please wait " +
+remaining +
+" seconds."
+);
+
+return;
+
+}
+
+
+/* START */
 
 adLoading = true;
 
@@ -1057,7 +1037,6 @@ const button =
 document.getElementById(
 "watchButton"
 );
-
 
 const message =
 document.getElementById(
@@ -1068,7 +1047,7 @@ document.getElementById(
 button.disabled = true;
 
 button.textContent =
-"⏳ Loading...";
+"⏳ Loading Ad...";
 
 
 message.classList
@@ -1080,43 +1059,127 @@ message.textContent =
 
 try{
 
-/*
-Show rewarded ad
-*/
+
+/* SHOW ADSGRAM */
 
 const result =
 await adController.show();
 
 
 console.log(
-"AdsGram result:",
+"AdsGram completed:",
 result
 );
 
 
-/*
-Ad completed.
+/* =================================================
+   AD COMPLETED
+================================================= */
 
-We DO NOT directly add
-Firebase coins here.
-*/
-
-message.textContent =
-"✅ Ad completed successfully!";
+const REWARD = 10;
 
 
-alert(
-"✅ Ad completed!\n\n" +
-"Your ad completion was detected."
+/* Save cooldown */
+
+localStorage.setItem(
+"adcoin_last_ad",
+String(Date.now())
 );
 
 
-/*
-For now just record local
-test information.
+/* Daily count */
 
-No coin is added here.
-*/
+const newCount =
+getTodayAds() + 1;
+
+setTodayAds(
+newCount
+);
+
+
+/* =================================================
+   FIREBASE TRANSACTION
+================================================= */
+
+const transaction =
+await userRef.transaction(
+function(user){
+
+if(!user){
+
+return user;
+
+}
+
+
+if(user.banned === true){
+
+return;
+
+}
+
+
+const balance =
+Number(
+user.balance || 0
+);
+
+
+const totalAds =
+Number(
+user.totalAds || 0
+);
+
+
+/* ADD 10 COINS */
+
+user.balance =
+balance + REWARD;
+
+
+/* ADD AD */
+
+user.totalAds =
+totalAds + 1;
+
+
+/* LAST REWARD */
+
+user.lastAdReward =
+Date.now();
+
+
+return user;
+
+}
+);
+
+
+/* =================================================
+   RESULT
+================================================= */
+
+if(transaction.committed){
+
+message.textContent =
+"🎉 +" +
+REWARD +
+" coins added!";
+
+
+alert(
+"🎉 Congratulations!\n\n" +
+"+" +
+REWARD +
+" coins added to your balance."
+);
+
+}else{
+
+message.textContent =
+"⚠️ Reward could not be saved.";
+
+}
 
 }catch(error){
 
@@ -1126,19 +1189,17 @@ error
 );
 
 
-const errorText =
-error.description ||
-error.message ||
-"Advertisement failed";
-
-
 message.textContent =
-"❌ " + errorText;
+"❌ Ad failed.";
 
 
 alert(
 "AdsGram Error:\n\n" +
-errorText
+(
+error.description ||
+error.message ||
+"Advertisement failed"
+)
 );
 
 
@@ -1156,40 +1217,13 @@ button.textContent =
 }
 
 
-/* =========================================
-   DAILY BONUS
-========================================= */
-
-function dailyBonus(){
-
-if(
-checkBan()
-){
-
-return;
-
-}
-
-alert(
-"🎁 Daily Bonus will be connected next."
-);
-
-}
-
-
-/* =========================================
-   COPY REFERRAL
-========================================= */
+/* =================================================
+   REFERRAL COPY
+================================================= */
 
 function copyReferral(){
 
-if(
-checkBan()
-){
-
-return;
-
-}
+if(checkBan()) return;
 
 
 const link =
@@ -1198,14 +1232,11 @@ document.getElementById(
 ).value;
 
 
-if(
-navigator.clipboard
-){
+if(navigator.clipboard){
 
 navigator.clipboard
 .writeText(link)
-.then(
-function(){
+.then(function(){
 
 alert(
 "✅ Referral link copied!"
@@ -1222,19 +1253,29 @@ alert(link);
 }
 
 
-/* =========================================
+/* =================================================
+   DAILY BONUS
+================================================= */
+
+function dailyBonus(){
+
+if(checkBan()) return;
+
+
+alert(
+"🎁 Daily Bonus will be added soon."
+);
+
+}
+
+
+/* =================================================
    WITHDRAW
-========================================= */
+================================================= */
 
 function withdraw(){
 
-if(
-checkBan()
-){
-
-return;
-
-}
+if(checkBan()) return;
 
 
 const method =
@@ -1242,13 +1283,11 @@ document.getElementById(
 "withdrawMethod"
 ).value;
 
-
 const account =
 document.getElementById(
 "withdrawAccount"
 ).value
 .trim();
-
 
 const amount =
 Number(
@@ -1258,36 +1297,43 @@ document.getElementById(
 );
 
 
-if(
-!account ||
-!amount
-){
-
-alert(
-"Please enter account and amount."
+const message =
+document.getElementById(
+"withdrawMessage"
 );
+
+
+message.classList
+.remove("hidden");
+
+
+if(!account){
+
+message.textContent =
+"❌ Enter your account/wallet.";
 
 return;
 
 }
 
 
-if(
-amount <= 0
-){
+if(!amount || amount <= 0){
 
-alert(
-"Enter a valid amount."
-);
+message.textContent =
+"❌ Enter a valid amount.";
 
 return;
 
 }
 
 
-alert(
-"💸 Withdrawal request system will be connected next."
-);
+/*
+Withdrawal request will be
+connected to Admin Panel later.
+*/
+
+message.textContent =
+"✅ Withdrawal request submitted.";
 
 }
 
