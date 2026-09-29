@@ -1,1 +1,724 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AdCoin Admin</title><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script><style>body{margin:0;background:#07111f;color:white;font:15px Arial}.wrap{max-width:1000px;margin:auto;padding:20px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card,.stat{background:#0e1b2b;border:1px solid #1c3048;border-radius:16px;padding:18px;margin-top:16px}.stat b{display:block;font-size:28px;margin-top:8px}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px;border-bottom:1px solid #203247}th{color:#91a4ba}.muted{color:#8da0b5;font-size:13px}input,textarea{width:100%;box-sizing:border-box;padding:12px;margin-top:7px;background:#081522;color:white;border:1px solid #29405a;border-radius:9px}button{border:0;border-radius:9px;padding:10px 14px;font-weight:bold;background:#00d084;margin-top:10px}@media(max-width:700px){.grid{grid-template-columns:1fr 1fr}.table{overflow:auto}}</style></head><body><div class="wrap"><h2>🪙 AdCoin Admin</h2><div class="grid"><div class="stat">👥 Users<b id="users">0</b></div><div class="stat">🪙 Coins<b id="coins">0</b></div><div class="stat">📺 Ads<b id="ads">0</b></div><div class="stat">💸 Withdrawals<b>0</b></div></div><div class="card"><h2>⚙️ Settings</h2><label class="muted">Reward per verified ad</label><input id="reward" type="number" value="10"><label class="muted">Minimum withdrawal</label><input id="minimum" type="number" value="1000"><button onclick="save()">Save settings</button></div><div class="card"><h2>👥 Users</h2><div style="overflow:auto"><table><thead><tr><th>Telegram ID</th><th>Name</th><th>Balance</th><th>Ads</th></tr></thead><tbody id="rows"><tr><td colspan="4">Loading...</td></tr></tbody></table></div></div><div class="card"><h2>📢 Announcement</h2><textarea id="ann" rows="4" placeholder="Write announcement"></textarea><button onclick="announce()">Save announcement</button></div><div class="card"><b>🔒 Security</b><p class="muted">This is the first admin UI. Real balance changes and withdrawals should only be enabled after secure admin authentication/backend authorization is added.</p></div></div><script>const c={apiKey:"AIzaSyDnQPm57HTYnaglTEMj0Ez1Vm6NsZ21nyY",authDomain:"unique-tour-6f65d.firebaseapp.com",databaseURL:"https://unique-tour-6f65d-default-rtdb.firebaseio.com",projectId:"unique-tour-6f65d",storageBucket:"unique-tour-6f65d.firebasestorage.app",messagingSenderId:"314084431584",appId:"1:314084431584:web:249c97883913a2199de285",measurementId:"G-Q95BZS765X"};firebase.initializeApp(c);const db=firebase.database();db.ref("users").on("value",s=>{let d=s.val()||{},n=Object.keys(d),co=0,ad=0,r="";n.forEach(id=>{let u=d[id]||{};co+=+u.balance||0;ad+=+u.totalAds||0;r+=`<tr><td>${id}</td><td>${u.name||"-"}</td><td>${u.balance||0}</td><td>${u.totalAds||0}</td></tr>`});users.textContent=n.length;coins.textContent=co;ads.textContent=ad;rows.innerHTML=r||'<tr><td colspan="4">No users</td></tr>'});function save(){db.ref("settings").update({adReward:+reward.value||0,minimumWithdrawal:+minimum.value||0}).then(()=>alert("Saved"))}function announce(){let x=ann.value.trim();if(x)db.ref("settings/announcement").set(x).then(()=>alert("Saved"))}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AdCoin Admin</title>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ background:#07111f;
+ color:#fff;
+ font-family:Arial,sans-serif;
+}
+
+.container{
+ max-width:1000px;
+ margin:auto;
+ padding:20px;
+}
+
+.login{
+ max-width:400px;
+ margin:70px auto;
+ background:#0e1b2b;
+ border:1px solid #1c3048;
+ border-radius:20px;
+ padding:25px;
+}
+
+.logo{
+ text-align:center;
+ font-size:28px;
+ font-weight:bold;
+ margin-bottom:20px;
+}
+
+input,textarea{
+ width:100%;
+ padding:13px;
+ margin:7px 0 14px;
+ border-radius:10px;
+ border:1px solid #29405a;
+ background:#081522;
+ color:#fff;
+ outline:none;
+}
+
+button{
+ border:0;
+ border-radius:10px;
+ padding:12px 18px;
+ font-weight:bold;
+ cursor:pointer;
+}
+
+.loginBtn{
+ width:100%;
+ background:#00d084;
+ color:#001b10;
+}
+
+.logout{
+ background:#ff5364;
+ color:#fff;
+}
+
+.header{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:20px;
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:12px;
+}
+
+.stat{
+ background:#0e1b2b;
+ border:1px solid #1c3048;
+ border-radius:16px;
+ padding:18px;
+}
+
+.stat span{
+ color:#8da0b5;
+ font-size:13px;
+}
+
+.stat b{
+ display:block;
+ font-size:30px;
+ margin-top:8px;
+}
+
+.card{
+ background:#0e1b2b;
+ border:1px solid #1c3048;
+ border-radius:16px;
+ padding:20px;
+ margin-top:16px;
+}
+
+.card h2{
+ margin-top:0;
+}
+
+.save{
+ background:#00d084;
+ color:#001b10;
+}
+
+.hidden{
+ display:none;
+}
+
+.error{
+ color:#ff7373;
+ font-size:13px;
+ margin-top:8px;
+}
+
+.success{
+ color:#00d084;
+ font-size:13px;
+ margin-top:10px;
+}
+
+.muted{
+ color:#8da0b5;
+ font-size:13px;
+}
+
+.tableWrap{
+ overflow:auto;
+}
+
+table{
+ width:100%;
+ border-collapse:collapse;
+ min-width:600px;
+}
+
+th,td{
+ text-align:left;
+ padding:12px;
+ border-bottom:1px solid #203247;
+}
+
+th{
+ color:#91a4ba;
+}
+
+@media(max-width:700px){
+ .grid{
+  grid-template-columns:1fr 1fr;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox" class="login">
+
+<div class="logo">
+🪙 AdCoin Admin
+</div>
+
+<p class="muted">
+Login with your Firebase Email & Password
+</p>
+
+<input
+ id="email"
+ type="email"
+ placeholder="Admin Email"
+ autocomplete="username"
+>
+
+<input
+ id="password"
+ type="password"
+ placeholder="Password"
+ autocomplete="current-password"
+>
+
+<button class="loginBtn" onclick="login()">
+🔐 Login
+</button>
+
+<div id="loginError" class="error"></div>
+
+</div>
+
+
+<!-- ADMIN PANEL -->
+
+<div id="adminPanel" class="container hidden">
+
+<div class="header">
+
+<h2>🪙 AdCoin Admin</h2>
+
+<button class="logout" onclick="logout()">
+Logout
+</button>
+
+</div>
+
+
+<!-- STATS -->
+
+<div class="grid">
+
+<div class="stat">
+<span>👥 Users</span>
+<b id="userCount">0</b>
+</div>
+
+<div class="stat">
+<span>🪙 Total Coins</span>
+<b id="coinCount">0</b>
+</div>
+
+<div class="stat">
+<span>📺 Ads Watched</span>
+<b id="adCount">0</b>
+</div>
+
+<div class="stat">
+<span>💸 Withdrawals</span>
+<b id="withdrawCount">0</b>
+</div>
+
+</div>
+
+
+<!-- SETTINGS -->
+
+<div class="card">
+
+<h2>⚙️ App Settings</h2>
+
+<label class="muted">
+Coins per verified ad
+</label>
+
+<input
+ id="adReward"
+ type="number"
+ value="10"
+>
+
+<label class="muted">
+Minimum withdrawal
+</label>
+
+<input
+ id="minimumWithdraw"
+ type="number"
+ value="1000"
+>
+
+<button class="save" onclick="saveSettings()">
+💾 Save Settings
+</button>
+
+<div id="settingMessage"></div>
+
+</div>
+
+
+<!-- USERS -->
+
+<div class="card">
+
+<h2>👥 Users</h2>
+
+<div class="tableWrap">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Telegram ID</th>
+<th>Name</th>
+<th>Balance</th>
+<th>Ads</th>
+<th>Joined</th>
+</tr>
+
+</thead>
+
+<tbody id="userTable">
+
+<tr>
+<td colspan="5">
+Loading...
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- ANNOUNCEMENT -->
+
+<div class="card">
+
+<h2>📢 Announcement</h2>
+
+<textarea
+ id="announcement"
+ rows="5"
+ placeholder="Write announcement..."
+></textarea>
+
+<button class="save" onclick="saveAnnouncement()">
+📢 Save Announcement
+</button>
+
+<div id="announcementMessage"></div>
+
+</div>
+
+
+<!-- SECURITY -->
+
+<div class="card">
+
+<h2>🔒 Security</h2>
+
+<p class="muted">
+You are logged in using Firebase Authentication.
+Do not share your Firebase password or Telegram bot token.
+</p>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   FIREBASE CONFIG
+========================= */
+
+const firebaseConfig = {
+
+apiKey:
+"AIzaSyDnQPm57HTYnaglTEMj0Ez1Vm6NsZ21nyY",
+
+authDomain:
+"unique-tour-6f65d.firebaseapp.com",
+
+databaseURL:
+"https://unique-tour-6f65d-default-rtdb.firebaseio.com",
+
+projectId:
+"unique-tour-6f65d",
+
+storageBucket:
+"unique-tour-6f65d.firebasestorage.app",
+
+messagingSenderId:
+"314084431584",
+
+appId:
+"1:314084431584:web:249c97883913a2199de285",
+
+measurementId:
+"G-Q95BZS765X"
+
+};
+
+
+/* =========================
+   INIT FIREBASE
+========================= */
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+const db = firebase.database();
+
+
+/* =========================
+   AUTH STATE
+========================= */
+
+auth.onAuthStateChanged(function(user){
+
+if(user){
+
+document
+.getElementById("loginBox")
+.classList.add("hidden");
+
+document
+.getElementById("adminPanel")
+.classList.remove("hidden");
+
+loadDashboard();
+
+}else{
+
+document
+.getElementById("adminPanel")
+.classList.add("hidden");
+
+document
+.getElementById("loginBox")
+.classList.remove("hidden");
+
+}
+
+});
+
+
+/* =========================
+   LOGIN
+========================= */
+
+function login(){
+
+const email =
+document.getElementById("email").value.trim();
+
+const password =
+document.getElementById("password").value;
+
+const error =
+document.getElementById("loginError");
+
+error.textContent="";
+
+if(!email || !password){
+
+error.textContent=
+"Email and password required.";
+
+return;
+
+}
+
+auth
+.signInWithEmailAndPassword(email,password)
+.catch(function(err){
+
+error.textContent =
+err.message;
+
+});
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout(){
+
+auth.signOut();
+
+}
+
+
+/* =========================
+   LOAD DASHBOARD
+========================= */
+
+function loadDashboard(){
+
+db.ref("users").on("value",function(snapshot){
+
+const data =
+snapshot.val() || {};
+
+const ids =
+Object.keys(data);
+
+let totalCoins=0;
+let totalAds=0;
+
+let html="";
+
+ids.forEach(function(id){
+
+const user =
+data[id] || {};
+
+const balance =
+Number(user.balance || 0);
+
+const ads =
+Number(user.totalAds || 0);
+
+totalCoins += balance;
+totalAds += ads;
+
+let joined="-";
+
+if(user.createdAt){
+
+joined =
+new Date(user.createdAt)
+.toLocaleDateString();
+
+}
+
+html += `
+
+<tr>
+
+<td>
+${escapeHTML(id)}
+</td>
+
+<td>
+${escapeHTML(user.name || "-")}
+</td>
+
+<td>
+${balance}
+</td>
+
+<td>
+${ads}
+</td>
+
+<td>
+${joined}
+</td>
+
+</tr>
+
+`;
+
+});
+
+
+document.getElementById("userCount")
+.textContent=ids.length;
+
+document.getElementById("coinCount")
+.textContent=totalCoins;
+
+document.getElementById("adCount")
+.textContent=totalAds;
+
+document.getElementById("userTable")
+.innerHTML =
+html ||
+`<tr>
+<td colspan="5">
+No users found.
+</td>
+</tr>`;
+
+});
+
+
+/* LOAD SETTINGS */
+
+db.ref("settings").once("value")
+.then(function(snapshot){
+
+const settings =
+snapshot.val() || {};
+
+document.getElementById("adReward")
+.value =
+settings.adReward ?? 10;
+
+document.getElementById("minimumWithdraw")
+.value =
+settings.minimumWithdrawal ?? 1000;
+
+document.getElementById("announcement")
+.value =
+settings.announcement || "";
+
+});
+
+}
+
+
+/* =========================
+   SAVE SETTINGS
+========================= */
+
+function saveSettings(){
+
+const reward =
+Number(
+document.getElementById("adReward").value
+) || 0;
+
+const minimum =
+Number(
+document.getElementById("minimumWithdraw").value
+) || 0;
+
+db.ref("settings").update({
+
+adReward:reward,
+
+minimumWithdrawal:minimum
+
+})
+.then(function(){
+
+showMessage(
+"settingMessage",
+"Settings saved successfully.",
+true
+);
+
+})
+.catch(function(error){
+
+showMessage(
+"settingMessage",
+error.message,
+false
+);
+
+});
+
+}
+
+
+/* =========================
+   ANNOUNCEMENT
+========================= */
+
+function saveAnnouncement(){
+
+const text =
+document
+.getElementById("announcement")
+.value
+.trim();
+
+db.ref("settings/announcement")
+.set(text)
+.then(function(){
+
+showMessage(
+"announcementMessage",
+"Announcement saved.",
+true
+);
+
+})
+.catch(function(error){
+
+showMessage(
+"announcementMessage",
+error.message,
+false
+);
+
+});
+
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(id,text,success){
+
+const el =
+document.getElementById(id);
+
+el.textContent=text;
+
+el.className =
+success ? "success" : "error";
+
+}
+
+
+/* =========================
+   HTML ESCAPE
+========================= */
+
+function escapeHTML(value){
+
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+</script>
+
+</body>
+</html>
