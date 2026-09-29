@@ -14,28 +14,25 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <style>
-
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
 margin:0;
 background:#07111f;
 color:#fff;
-font-family:Arial,sans-serif;
+font-family:Arial,sans-serif
 }
 
 .app{
 max-width:480px;
 margin:auto;
-padding:18px 16px 95px;
+padding:18px 16px 95px
 }
 
 .top{
 display:flex;
 align-items:center;
-gap:12px;
+gap:12px
 }
 
 .avatar{
@@ -46,18 +43,18 @@ display:grid;
 place-items:center;
 background:linear-gradient(135deg,#00d4ff,#7347ff);
 font-weight:bold;
-font-size:20px;
+font-size:20px
 }
 
 .name{
 font-size:17px;
-font-weight:bold;
+font-weight:bold
 }
 
 .sub{
 color:#8ea0b5;
 font-size:12px;
-margin-top:3px;
+margin-top:3px
 }
 
 .balance{
@@ -65,12 +62,12 @@ margin-top:18px;
 padding:25px;
 text-align:center;
 border-radius:22px;
-background:linear-gradient(135deg,#1769ff,#743cff);
+background:linear-gradient(135deg,#1769ff,#743cff)
 }
 
 .balance h1{
 font-size:44px;
-margin:8px 0;
+margin:8px 0
 }
 
 .card{
@@ -78,11 +75,11 @@ background:#0e1b2b;
 border:1px solid #1c3048;
 border-radius:20px;
 padding:19px;
-margin-top:16px;
+margin-top:16px
 }
 
 .card h2{
-margin-top:0;
+margin-top:0
 }
 
 .btn{
@@ -93,35 +90,35 @@ border:0;
 border-radius:14px;
 font-weight:bold;
 font-size:15px;
-cursor:pointer;
+cursor:pointer
 }
 
 .primary{
 background:#00d084;
-color:#001b10;
+color:#001b10
 }
 
 .secondary{
 background:#17283b;
-color:#fff;
+color:#fff
 }
 
 .btn:disabled{
-opacity:.55;
+opacity:.55
 }
 
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:12px;
-margin-top:16px;
+margin-top:16px
 }
 
 .tile{
 background:#0e1b2b;
 border:1px solid #1c3048;
 border-radius:18px;
-padding:17px;
+padding:17px
 }
 
 .nav{
@@ -134,7 +131,7 @@ border-top:1px solid #1c3048;
 display:flex;
 justify-content:space-around;
 padding:9px 5px;
-z-index:100;
+z-index:100
 }
 
 .nav button{
@@ -142,19 +139,19 @@ background:none;
 border:0;
 color:#8293a8;
 font-size:11px;
-padding:5px;
+padding:5px
 }
 
 .nav button.active{
-color:#fff;
+color:#fff
 }
 
 .page{
-display:none;
+display:none
 }
 
 .page.active{
-display:block;
+display:block
 }
 
 input,select{
@@ -165,7 +162,7 @@ background:#081522;
 color:#fff;
 border:1px solid #29405a;
 border-radius:10px;
-outline:none;
+outline:none
 }
 
 .message{
@@ -174,7 +171,7 @@ padding:12px;
 border-radius:10px;
 background:#101f31;
 color:#9eb0c5;
-font-size:13px;
+font-size:13px
 }
 
 .banned{
@@ -183,11 +180,11 @@ border:1px solid #71303c;
 border-radius:20px;
 padding:25px;
 margin-top:20px;
-text-align:center;
+text-align:center
 }
 
 .banned h2{
-color:#ff7180;
+color:#ff7180
 }
 
 .reason{
@@ -195,13 +192,13 @@ background:#24131a;
 border-radius:12px;
 padding:14px;
 margin-top:16px;
-text-align:left;
+text-align:left
 }
 
 .reason-title{
 color:#ff9aa5;
 font-size:13px;
-margin-bottom:6px;
+margin-bottom:6px
 }
 
 .support{
@@ -212,13 +209,23 @@ text-decoration:none;
 padding:14px;
 border-radius:13px;
 margin-top:18px;
-font-weight:bold;
+font-weight:bold
 }
 
 .hidden{
-display:none!important;
+display:none!important
 }
 
+.profile-row{
+padding:14px 0;
+border-bottom:1px solid #1c3048
+}
+
+.profile-label{
+color:#8ea0b5;
+font-size:12px;
+margin-bottom:5px
+}
 </style>
 </head>
 
@@ -238,12 +245,14 @@ display:none!important;
 </div>
 
 
+<!-- BAN -->
+
 <div id="banBox" class="banned hidden">
 
 <h2>🚫 Account Banned</h2>
 
 <p class="sub">
-Your account has been restricted.
+Your account has been restricted by the administrator.
 </p>
 
 <div class="reason">
@@ -261,27 +270,32 @@ No reason provided.
 <a
 class="support"
 href="https://t.me/tohid14"
-target="_blank"
->
+target="_blank">
 💬 Contact Support @tohid14
 </a>
 
 </div>
 
 
+<!-- LOADING -->
+
 <div id="loadingBox" class="card">
 
 <h2>⏳ Loading...</h2>
 
 <p class="sub">
-Connecting your account.
+Connecting your account...
 </p>
 
 </div>
 
 
+<!-- MAIN -->
+
 <div id="normalApp" class="hidden">
 
+
+<!-- HOME -->
 
 <section id="home" class="page active">
 
@@ -307,15 +321,14 @@ Watch a rewarded advertisement and earn 10 coins.
 <button
 class="btn primary"
 id="watchButton"
-onclick="watchAd()"
->
+onclick="watchAd()">
 ▶ Watch Ad
 </button>
 
 <div
 id="adMessage"
-class="message hidden"
-></div>
+class="message hidden">
+</div>
 
 </div>
 
@@ -325,7 +338,7 @@ class="message hidden"
 <h2>📊 Today's Ads</h2>
 
 <p class="sub">
-Daily limit: 50 ads.
+Maximum 50 rewarded ads per day.
 </p>
 
 <h2>
@@ -338,38 +351,25 @@ Daily limit: 50 ads.
 <div class="grid">
 
 <div class="tile">
-
 👥<br>
-
 <b id="refs">0</b>
-
 <br>
-
-<span class="sub">
-Referrals
-</span>
-
+<span class="sub">Referrals</span>
 </div>
 
-
 <div class="tile">
-
 📺<br>
-
 <b id="ads">0</b>
-
 <br>
-
-<span class="sub">
-Total Ads
-</span>
-
+<span class="sub">Total Ads</span>
 </div>
 
 </div>
 
 </section>
 
+
+<!-- REFER -->
 
 <section id="refer" class="page">
 
@@ -378,16 +378,17 @@ Total Ads
 <h2>👥 Invite Friends</h2>
 
 <p class="sub">
-Invite your friends.
+Invite your friends and earn rewards.
 </p>
 
-<input id="refLink" readonly>
+<input
+id="refLink"
+readonly>
 
 <button
 class="btn primary"
-onclick="copyReferral()"
->
-📋 Copy Link
+onclick="copyReferral()">
+📋 Copy Referral Link
 </button>
 
 </div>
@@ -395,11 +396,17 @@ onclick="copyReferral()"
 </section>
 
 
+<!-- WITHDRAW -->
+
 <section id="withdraw" class="page">
 
 <div class="card">
 
 <h2>💸 Withdraw</h2>
+
+<p class="sub">
+Choose your payment method.
+</p>
 
 <select id="withdrawMethod">
 
@@ -411,31 +418,30 @@ onclick="copyReferral()"
 
 <input
 id="withdrawAccount"
-placeholder="Account / Wallet"
->
+placeholder="Account / Wallet">
 
 <input
 id="withdrawAmount"
 type="number"
-placeholder="Amount"
->
+placeholder="Amount">
 
 <button
 class="btn primary"
-onclick="withdraw()"
->
-💸 Submit
+onclick="withdraw()">
+💸 Submit Withdrawal
 </button>
 
 <div
 id="withdrawMessage"
-class="message hidden"
-></div>
+class="message hidden">
+</div>
 
 </div>
 
 </section>
 
+
+<!-- HISTORY -->
 
 <section id="history" class="page">
 
@@ -444,15 +450,19 @@ class="message hidden"
 <h2>📜 History</h2>
 
 <div id="historyList">
+
 <p class="sub">
 No transactions yet.
 </p>
+
 </div>
 
 </div>
 
 </section>
 
+
+<!-- PROFILE -->
 
 <section id="profile" class="page">
 
@@ -460,21 +470,50 @@ No transactions yet.
 
 <h2>👤 Profile</h2>
 
-<p class="sub">Name</p>
+<div class="profile-row">
+
+<div class="profile-label">
+Name
+</div>
 
 <b id="profileName">-</b>
 
-<p class="sub" style="margin-top:20px">
+</div>
+
+
+<div class="profile-row">
+
+<div class="profile-label">
 Telegram ID
-</p>
+</div>
 
 <b id="telegramId">-</b>
 
-<p class="sub" style="margin-top:20px">
-Firebase UID
-</p>
+</div>
 
-<b id="firebaseUid">-</b>
+
+<div class="profile-row">
+
+<div class="profile-label">
+Balance
+</div>
+
+<b>
+<span id="profileBalance">0</span> 🪙
+</b>
+
+</div>
+
+
+<div class="profile-row">
+
+<div class="profile-label">
+Total Ads Watched
+</div>
+
+<b id="profileAds">0</b>
+
+</div>
 
 </div>
 
@@ -483,9 +522,12 @@ Firebase UID
 </div>
 
 
+<!-- NAVIGATION -->
+
 <nav id="bottomNav" class="nav hidden">
 
-<button class="active"
+<button
+class="active"
 onclick="openPage('home',this)">
 🏠<br>Home
 </button>
@@ -601,7 +643,7 @@ firebase.database();
 
 
 /* ==========================================
-ADS SETTINGS
+ADSGRAM
 ========================================== */
 
 const BLOCK_ID = "50759";
@@ -609,7 +651,6 @@ const BLOCK_ID = "50759";
 let adController = null;
 
 let adLoading = false;
-
 
 try{
 
@@ -621,14 +662,14 @@ blockId: BLOCK_ID
 });
 
 console.log(
-"AdsGram ready:",
+"AdsGram initialized:",
 BLOCK_ID
 );
 
 }catch(error){
 
 console.error(
-"AdsGram init error:",
+"AdsGram initialization error:",
 error
 );
 
@@ -657,23 +698,12 @@ auth.signInAnonymously()
 firebaseUser =
 result.user;
 
-
 console.log(
-"Firebase UID:",
-firebaseUser.uid
+"Firebase login successful"
 );
 
 
-document.getElementById(
-"firebaseUid"
-).textContent =
-firebaseUser.uid;
-
-
-/*
-IMPORTANT:
-Database path uses Firebase UID.
-*/
+/* USER DATABASE PATH */
 
 userRef =
 db.ref(
@@ -682,9 +712,7 @@ firebaseUser.uid
 );
 
 
-/*
-Referral link
-*/
+/* REFERRAL LINK */
 
 document.getElementById(
 "refLink"
@@ -693,9 +721,7 @@ document.getElementById(
 telegramId;
 
 
-/*
-Load/create user
-*/
+/* LOAD USER */
 
 return loadUser();
 
@@ -704,7 +730,7 @@ return loadUser();
 .catch(function(error){
 
 console.error(
-"Firebase Auth Error:",
+"Firebase Authentication Error:",
 error
 );
 
@@ -712,12 +738,10 @@ document.getElementById(
 "loadingBox"
 ).innerHTML =
 
-"<h2>❌ Login Error</h2>" +
+"<h2>❌ Login Failed</h2>" +
 
 "<p class='sub'>" +
-
 error.message +
-
 "</p>";
 
 });
@@ -758,6 +782,9 @@ false,
 banReason:
 "",
 
+totalAds:
+0,
+
 createdAt:
 Date.now()
 
@@ -796,21 +823,29 @@ if(user.banned === true){
 
 isBanned = true;
 
-document.getElementById(
-"normalApp"
-).classList.add("hidden");
+document
+.getElementById("normalApp")
+.classList
+.add("hidden");
 
-document.getElementById(
-"bottomNav"
-).classList.add("hidden");
+document
+.getElementById("bottomNav")
+.classList
+.add("hidden");
 
-document.getElementById(
-"banBox"
-).classList.remove("hidden");
+document
+.getElementById("loadingBox")
+.classList
+.add("hidden");
 
-document.getElementById(
-"banReason"
-).textContent =
+document
+.getElementById("banBox")
+.classList
+.remove("hidden");
+
+document
+.getElementById("banReason")
+.textContent =
 user.banReason ||
 "No reason provided.";
 
@@ -823,35 +858,60 @@ return;
 
 isBanned = false;
 
+document
+.getElementById("banBox")
+.classList
+.add("hidden");
 
-document.getElementById(
-"banBox"
-).classList.add("hidden");
+document
+.getElementById("loadingBox")
+.classList
+.add("hidden");
 
-document.getElementById(
-"normalApp"
-).classList.remove("hidden");
+document
+.getElementById("normalApp")
+.classList
+.remove("hidden");
 
-document.getElementById(
-"bottomNav"
-).classList.remove("hidden");
-
-document.getElementById(
-"loadingBox"
-).classList.add("hidden");
+document
+.getElementById("bottomNav")
+.classList
+.remove("hidden");
 
 
-/* DATA */
+/* BALANCE */
+
+const balance =
+Number(user.balance || 0);
 
 document.getElementById(
 "balance"
 ).textContent =
-Number(user.balance || 0);
+balance;
+
+document.getElementById(
+"profileBalance"
+).textContent =
+balance;
+
+
+/* TOTAL ADS */
+
+const totalAds =
+Number(user.totalAds || 0);
 
 document.getElementById(
 "ads"
 ).textContent =
-Number(user.totalAds || 0);
+totalAds;
+
+document.getElementById(
+"profileAds"
+).textContent =
+totalAds;
+
+
+/* REFERRALS */
 
 document.getElementById(
 "refs"
@@ -873,7 +933,7 @@ if(isBanned){
 
 alert(
 "🚫 Your account is banned.\n\n" +
-"Contact @tohid14."
+"Contact @tohid14 for support."
 );
 
 return true;
@@ -908,7 +968,8 @@ el.classList.remove("active");
 
 document
 .getElementById(page)
-.classList.add("active");
+.classList
+.add("active");
 
 
 document
@@ -1014,7 +1075,7 @@ if(adLoading) return;
 if(!firebaseUser){
 
 alert(
-"Please wait for login."
+"⏳ Please wait for login."
 );
 
 return;
@@ -1025,7 +1086,7 @@ return;
 if(!adController){
 
 alert(
-"AdsGram is not ready.\n" +
+"AdsGram is not ready.\n\n" +
 "Please reopen the Mini App."
 );
 
@@ -1036,15 +1097,15 @@ return;
 
 /* DAILY LIMIT */
 
-const count =
+const todayAds =
 getTodayAds();
 
 
-if(count >= 50){
+if(todayAds >= 50){
 
 alert(
 "🚫 Daily limit reached.\n\n" +
-"Come back tomorrow."
+"Maximum 50 ads per day."
 );
 
 return;
@@ -1054,23 +1115,26 @@ return;
 
 /* COOLDOWN */
 
-const last =
+const lastAd =
 Number(
 localStorage.getItem(
 "adcoin_last_ad"
 ) || 0
 );
 
-const wait =
-10000 -
-(Date.now() - last);
+const cooldown =
+10000;
+
+const remaining =
+cooldown -
+(Date.now() - lastAd);
 
 
-if(wait > 0){
+if(remaining > 0){
 
 alert(
 "⏳ Please wait " +
-Math.ceil(wait / 1000) +
+Math.ceil(remaining / 1000) +
 " seconds."
 );
 
@@ -1079,7 +1143,7 @@ return;
 }
 
 
-/* UI */
+/* START */
 
 adLoading = true;
 
@@ -1112,7 +1176,7 @@ message.textContent =
 try{
 
 
-/* SHOW ADS */
+/* ADSGRAM */
 
 await adController.show();
 
@@ -1124,12 +1188,7 @@ AD COMPLETED
 const REWARD = 10;
 
 
-/*
-Firebase transaction.
-
-Current balance is read from Firebase,
-then +10 is applied.
-*/
+/* FIREBASE TRANSACTION */
 
 const result =
 await userRef.transaction(
@@ -1151,12 +1210,14 @@ return;
 
 user.balance =
 Number(user.balance || 0)
-+ REWARD;
++
+REWARD;
 
 
 user.totalAds =
 Number(user.totalAds || 0)
-+ 1;
++
+1;
 
 
 user.lastAdReward =
@@ -1187,7 +1248,7 @@ message.textContent =
 
 alert(
 "🎉 Ad completed!\n\n" +
-"+10 coins added."
+"+10 coins added to your balance."
 );
 
 }else{
@@ -1195,25 +1256,31 @@ alert(
 message.textContent =
 "⚠️ Reward was not saved.";
 
+alert(
+"⚠️ Reward could not be saved."
+);
+
 }
 
 }catch(error){
 
 console.error(
-"Reward error:",
+"AdsGram / Firebase error:",
 error
 );
 
-
 message.textContent =
-"❌ " +
-(error.message || "Error");
+"❌ Reward failed.";
 
 
 alert(
 "Error:\n\n" +
-(error.message || error)
+(
+error.message ||
+"Something went wrong."
+)
 );
+
 
 }finally{
 
@@ -1244,6 +1311,10 @@ document.getElementById(
 ).value;
 
 
+if(
+navigator.clipboard
+){
+
 navigator.clipboard
 .writeText(link)
 .then(function(){
@@ -1258,6 +1329,12 @@ alert(
 alert(link);
 
 });
+
+}else{
+
+alert(link);
+
+}
 
 }
 
@@ -1279,7 +1356,8 @@ document.getElementById(
 const account =
 document.getElementById(
 "withdrawAccount"
-).value.trim();
+).value
+.trim();
 
 const amount =
 Number(
@@ -1319,10 +1397,6 @@ return;
 
 }
 
-
-/*
-Only UI for now.
-*/
 
 message.textContent =
 "✅ Withdrawal request submitted.";
