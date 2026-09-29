@@ -11,159 +11,70 @@
 
 <style>
 *{box-sizing:border-box}
-
 body{
- margin:0;
- background:#07111f;
- color:#fff;
- font-family:Arial,sans-serif;
+ margin:0;background:#07111f;color:#fff;
+ font-family:Arial,sans-serif
 }
-
-.container{
- max-width:1000px;
- margin:auto;
- padding:20px;
-}
-
+.container{max-width:1100px;margin:auto;padding:20px}
 .login{
- max-width:400px;
- margin:70px auto;
- background:#0e1b2b;
- border:1px solid #1c3048;
- border-radius:20px;
- padding:25px;
+ max-width:400px;margin:70px auto;padding:25px;
+ background:#0e1b2b;border:1px solid #1c3048;
+ border-radius:20px
 }
-
-.logo{
- text-align:center;
- font-size:28px;
- font-weight:bold;
- margin-bottom:20px;
-}
-
 input,textarea{
- width:100%;
- padding:13px;
- margin:7px 0 14px;
- border-radius:10px;
- border:1px solid #29405a;
- background:#081522;
- color:#fff;
- outline:none;
+ width:100%;padding:13px;margin:7px 0 14px;
+ background:#081522;color:#fff;
+ border:1px solid #29405a;border-radius:10px
 }
-
 button{
- border:0;
- border-radius:10px;
- padding:12px 18px;
- font-weight:bold;
- cursor:pointer;
+ border:0;border-radius:9px;padding:10px 14px;
+ font-weight:bold;cursor:pointer
 }
-
-.loginBtn{
- width:100%;
- background:#00d084;
- color:#001b10;
-}
-
-.logout{
- background:#ff5364;
- color:#fff;
-}
-
+.loginBtn,.save{background:#00d084;color:#001b10}
+.logout,.ban{background:#ff5364;color:white}
+.unban{background:#00d084;color:#001b10}
+.hidden{display:none}
 .header{
- display:flex;
- justify-content:space-between;
- align-items:center;
- margin-bottom:20px;
+ display:flex;justify-content:space-between;
+ align-items:center;margin-bottom:20px
 }
-
 .grid{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:12px;
+ display:grid;grid-template-columns:repeat(4,1fr);gap:12px
 }
-
 .stat{
- background:#0e1b2b;
- border:1px solid #1c3048;
- border-radius:16px;
- padding:18px;
+ background:#0e1b2b;border:1px solid #1c3048;
+ border-radius:16px;padding:18px
 }
-
-.stat span{
- color:#8da0b5;
- font-size:13px;
-}
-
-.stat b{
- display:block;
- font-size:30px;
- margin-top:8px;
-}
-
+.stat span{color:#8da0b5;font-size:13px}
+.stat b{display:block;font-size:30px;margin-top:8px}
 .card{
- background:#0e1b2b;
- border:1px solid #1c3048;
- border-radius:16px;
- padding:20px;
- margin-top:16px;
+ background:#0e1b2b;border:1px solid #1c3048;
+ border-radius:16px;padding:20px;margin-top:16px
 }
-
-.card h2{
- margin-top:0;
-}
-
-.save{
- background:#00d084;
- color:#001b10;
-}
-
-.hidden{
- display:none;
-}
-
-.error{
- color:#ff7373;
- font-size:13px;
- margin-top:8px;
-}
-
-.success{
- color:#00d084;
- font-size:13px;
- margin-top:10px;
-}
-
-.muted{
- color:#8da0b5;
- font-size:13px;
-}
-
-.tableWrap{
- overflow:auto;
-}
-
+.muted{color:#8da0b5;font-size:13px}
+.error{color:#ff7373;font-size:13px}
+.success{color:#00d084;font-size:13px}
+.tableWrap{overflow:auto}
 table{
- width:100%;
- border-collapse:collapse;
- min-width:600px;
+ width:100%;border-collapse:collapse;min-width:850px
 }
-
 th,td{
- text-align:left;
- padding:12px;
- border-bottom:1px solid #203247;
+ padding:12px;text-align:left;
+ border-bottom:1px solid #203247
 }
-
-th{
- color:#91a4ba;
+th{color:#91a4ba}
+.status{
+ padding:5px 9px;border-radius:8px;
+ font-size:12px;font-weight:bold
 }
-
+.active{background:#123d2d;color:#00d084}
+.banned{background:#421d25;color:#ff6878}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.search{
+ margin-bottom:10px
+}
 @media(max-width:700px){
- .grid{
-  grid-template-columns:1fr 1fr;
- }
+ .grid{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -171,40 +82,29 @@ th{
 <body>
 
 <!-- LOGIN -->
+
 <div id="loginBox" class="login">
 
-<div class="logo">
-🪙 AdCoin Admin
-</div>
+<h2>🪙 AdCoin Admin</h2>
 
 <p class="muted">
-Login with your Firebase Email & Password
+Login with your Firebase email and password
 </p>
 
-<input
- id="email"
- type="email"
- placeholder="Admin Email"
- autocomplete="username"
->
+<input id="email" type="email" placeholder="Admin Email">
 
-<input
- id="password"
- type="password"
- placeholder="Password"
- autocomplete="current-password"
->
+<input id="password" type="password" placeholder="Password">
 
-<button class="loginBtn" onclick="login()">
+<button class="loginBtn" style="width:100%" onclick="login()">
 🔐 Login
 </button>
 
-<div id="loginError" class="error"></div>
+<div id="loginError"></div>
 
 </div>
 
 
-<!-- ADMIN PANEL -->
+<!-- ADMIN -->
 
 <div id="adminPanel" class="container hidden">
 
@@ -239,8 +139,8 @@ Logout
 </div>
 
 <div class="stat">
-<span>💸 Withdrawals</span>
-<b id="withdrawCount">0</b>
+<span>🔴 Banned</span>
+<b id="bannedCount">0</b>
 </div>
 
 </div>
@@ -256,21 +156,13 @@ Logout
 Coins per verified ad
 </label>
 
-<input
- id="adReward"
- type="number"
- value="10"
->
+<input id="adReward" type="number" value="10">
 
 <label class="muted">
 Minimum withdrawal
 </label>
 
-<input
- id="minimumWithdraw"
- type="number"
- value="1000"
->
+<input id="minimumWithdraw" type="number" value="1000">
 
 <button class="save" onclick="saveSettings()">
 💾 Save Settings
@@ -287,6 +179,13 @@ Minimum withdrawal
 
 <h2>👥 Users</h2>
 
+<input
+ id="searchUser"
+ class="search"
+ placeholder="🔎 Search Telegram ID or name..."
+ oninput="renderUsers()"
+>
+
 <div class="tableWrap">
 
 <table>
@@ -298,7 +197,9 @@ Minimum withdrawal
 <th>Name</th>
 <th>Balance</th>
 <th>Ads</th>
-<th>Joined</th>
+<th>Status</th>
+<th>Ban Reason</th>
+<th>Action</th>
 </tr>
 
 </thead>
@@ -306,9 +207,7 @@ Minimum withdrawal
 <tbody id="userTable">
 
 <tr>
-<td colspan="5">
-Loading...
-</td>
+<td colspan="7">Loading...</td>
 </tr>
 
 </tbody>
@@ -327,9 +226,9 @@ Loading...
 <h2>📢 Announcement</h2>
 
 <textarea
- id="announcement"
- rows="5"
- placeholder="Write announcement..."
+id="announcement"
+rows="5"
+placeholder="Write announcement..."
 ></textarea>
 
 <button class="save" onclick="saveAnnouncement()">
@@ -341,15 +240,14 @@ Loading...
 </div>
 
 
-<!-- SECURITY -->
-
 <div class="card">
 
-<h2>🔒 Security</h2>
+<h3>🔒 Security</h3>
 
 <p class="muted">
-You are logged in using Firebase Authentication.
-Do not share your Firebase password or Telegram bot token.
+Ban status is stored inside each user's Firebase record.
+User App must also check this status before rewarding ads,
+daily bonuses, referrals and withdrawals.
 </p>
 
 </div>
@@ -359,9 +257,7 @@ Do not share your Firebase password or Telegram bot token.
 
 <script>
 
-/* =========================
-   FIREBASE CONFIG
-========================= */
+/* FIREBASE */
 
 const firebaseConfig = {
 
@@ -391,92 +287,70 @@ measurementId:
 
 };
 
-
-/* =========================
-   INIT FIREBASE
-========================= */
-
 firebase.initializeApp(firebaseConfig);
 
-const auth = firebase.auth();
+const auth=firebase.auth();
 
-const db = firebase.database();
+const db=firebase.database();
+
+let usersData={};
 
 
-/* =========================
-   AUTH STATE
-========================= */
+/* AUTH */
 
 auth.onAuthStateChanged(function(user){
 
 if(user){
 
-document
-.getElementById("loginBox")
-.classList.add("hidden");
+loginBox.classList.add("hidden");
 
-document
-.getElementById("adminPanel")
-.classList.remove("hidden");
+adminPanel.classList.remove("hidden");
 
 loadDashboard();
 
 }else{
 
-document
-.getElementById("adminPanel")
-.classList.add("hidden");
+adminPanel.classList.add("hidden");
 
-document
-.getElementById("loginBox")
-.classList.remove("hidden");
+loginBox.classList.remove("hidden");
 
 }
 
 });
 
 
-/* =========================
-   LOGIN
-========================= */
+/* LOGIN */
 
 function login(){
 
-const email =
-document.getElementById("email").value.trim();
+const e=email.value.trim();
 
-const password =
-document.getElementById("password").value;
+const p=password.value;
 
-const error =
-document.getElementById("loginError");
+loginError.className="error";
 
-error.textContent="";
+if(!e || !p){
 
-if(!email || !password){
-
-error.textContent=
+loginError.textContent=
 "Email and password required.";
 
 return;
 
 }
 
-auth
-.signInWithEmailAndPassword(email,password)
-.catch(function(err){
+auth.signInWithEmailAndPassword(e,p)
 
-error.textContent =
-err.message;
+.catch(function(error){
+
+loginError.textContent=
+error.message;
 
 });
 
 }
 
 
-/* =========================
-   LOGOUT
-========================= */
+/* LOGOUT */
 
 function logout(){
 
@@ -485,71 +359,156 @@ auth.signOut();
 }
 
 
-/* =========================
-   LOAD DASHBOARD
-========================= */
+/* LOAD DATA */
 
 function loadDashboard(){
 
 db.ref("users").on("value",function(snapshot){
 
-const data =
-snapshot.val() || {};
+usersData=snapshot.val() || {};
 
-const ids =
-Object.keys(data);
+updateStats();
 
-let totalCoins=0;
-let totalAds=0;
+renderUsers();
 
-let html="";
+});
 
-ids.forEach(function(id){
 
-const user =
-data[id] || {};
+db.ref("settings").once("value")
+.then(function(snapshot){
 
-const balance =
-Number(user.balance || 0);
+const s=snapshot.val() || {};
 
-const ads =
-Number(user.totalAds || 0);
+adReward.value=s.adReward ?? 10;
 
-totalCoins += balance;
-totalAds += ads;
+minimumWithdraw.value=
+s.minimumWithdrawal ?? 1000;
 
-let joined="-";
+announcement.value=
+s.announcement || "";
 
-if(user.createdAt){
-
-joined =
-new Date(user.createdAt)
-.toLocaleDateString();
+});
 
 }
 
-html += `
+
+/* STATS */
+
+function updateStats(){
+
+const ids=Object.keys(usersData);
+
+let coins=0;
+
+let ads=0;
+
+let banned=0;
+
+ids.forEach(function(id){
+
+const u=usersData[id] || {};
+
+coins+=Number(u.balance || 0);
+
+ads+=Number(u.totalAds || 0);
+
+if(u.banned===true){
+
+banned++;
+
+}
+
+});
+
+userCount.textContent=ids.length;
+
+coinCount.textContent=coins;
+
+adCount.textContent=ads;
+
+bannedCount.textContent=banned;
+
+}
+
+
+/* RENDER USERS */
+
+function renderUsers(){
+
+const search=
+(searchUser.value || "")
+.toLowerCase()
+.trim();
+
+let html="";
+
+Object.keys(usersData).forEach(function(id){
+
+const u=usersData[id] || {};
+
+const name=
+String(u.name || "");
+
+if(
+search &&
+!id.toLowerCase().includes(search) &&
+!name.toLowerCase().includes(search)
+){
+
+return;
+
+}
+
+const isBanned=
+u.banned===true;
+
+const status=
+isBanned
+?
+'<span class="status banned">🔴 Banned</span>'
+:
+'<span class="status active">🟢 Active</span>';
+
+const reason=
+u.banReason || "-";
+
+const action=
+isBanned
+
+?
+
+`<button class="unban"
+onclick="unbanUser('${safe(id)}')">
+🔓 Unban
+</button>`
+
+:
+
+`<button class="ban"
+onclick="banUser('${safe(id)}')">
+🚫 Ban
+</button>`;
+
+html+=`
 
 <tr>
 
-<td>
-${escapeHTML(id)}
-</td>
+<td>${escapeHTML(id)}</td>
+
+<td>${escapeHTML(name || "-")}</td>
+
+<td>${Number(u.balance || 0)}</td>
+
+<td>${Number(u.totalAds || 0)}</td>
+
+<td>${status}</td>
+
+<td>${escapeHTML(reason)}</td>
 
 <td>
-${escapeHTML(user.name || "-")}
-</td>
-
-<td>
-${balance}
-</td>
-
-<td>
-${ads}
-</td>
-
-<td>
-${joined}
+<div class="actions">
+${action}
+</div>
 </td>
 
 </tr>
@@ -559,67 +518,110 @@ ${joined}
 });
 
 
-document.getElementById("userCount")
-.textContent=ids.length;
+userTable.innerHTML=
 
-document.getElementById("coinCount")
-.textContent=totalCoins;
-
-document.getElementById("adCount")
-.textContent=totalAds;
-
-document.getElementById("userTable")
-.innerHTML =
 html ||
+
 `<tr>
-<td colspan="5">
-No users found.
+<td colspan="7">
+No matching users found.
 </td>
 </tr>`;
 
-});
+}
 
 
-/* LOAD SETTINGS */
+/* BAN */
 
-db.ref("settings").once("value")
-.then(function(snapshot){
+function banUser(id){
 
-const settings =
-snapshot.val() || {};
+const reason=
+prompt(
+"Enter ban reason:",
+"Suspicious activity"
+);
 
-document.getElementById("adReward")
-.value =
-settings.adReward ?? 10;
+if(reason===null){
 
-document.getElementById("minimumWithdraw")
-.value =
-settings.minimumWithdrawal ?? 1000;
+return;
 
-document.getElementById("announcement")
-.value =
-settings.announcement || "";
+}
+
+db.ref("users/"+id).update({
+
+banned:true,
+
+banReason:
+reason.trim() || "No reason provided",
+
+bannedAt:
+Date.now()
+
+})
+
+.then(function(){
+
+alert("User banned successfully.");
+
+})
+
+.catch(function(error){
+
+alert(error.message);
 
 });
 
 }
 
 
-/* =========================
-   SAVE SETTINGS
-========================= */
+/* UNBAN */
+
+function unbanUser(id){
+
+if(
+!confirm(
+"Are you sure you want to unban this user?"
+)
+){
+
+return;
+
+}
+
+db.ref("users/"+id).update({
+
+banned:false,
+
+banReason:"",
+
+bannedAt:null
+
+})
+
+.then(function(){
+
+alert("User unbanned successfully.");
+
+})
+
+.catch(function(error){
+
+alert(error.message);
+
+});
+
+}
+
+
+/* SETTINGS */
 
 function saveSettings(){
 
-const reward =
-Number(
-document.getElementById("adReward").value
-) || 0;
+const reward=
+Number(adReward.value)||0;
 
-const minimum =
-Number(
-document.getElementById("minimumWithdraw").value
-) || 0;
+const minimum=
+Number(minimumWithdraw.value)||0;
 
 db.ref("settings").update({
 
@@ -628,6 +630,7 @@ adReward:reward,
 minimumWithdrawal:minimum
 
 })
+
 .then(function(){
 
 showMessage(
@@ -637,6 +640,7 @@ true
 );
 
 })
+
 .catch(function(error){
 
 showMessage(
@@ -650,20 +654,16 @@ false
 }
 
 
-/* =========================
-   ANNOUNCEMENT
-========================= */
+/* ANNOUNCEMENT */
 
 function saveAnnouncement(){
 
-const text =
-document
-.getElementById("announcement")
-.value
-.trim();
+const text=
+announcement.value.trim();
 
 db.ref("settings/announcement")
 .set(text)
+
 .then(function(){
 
 showMessage(
@@ -673,6 +673,7 @@ true
 );
 
 })
+
 .catch(function(error){
 
 showMessage(
@@ -686,35 +687,51 @@ false
 }
 
 
-/* =========================
-   MESSAGE
-========================= */
+/* MESSAGE */
 
 function showMessage(id,text,success){
 
-const el =
+const el=
 document.getElementById(id);
 
 el.textContent=text;
 
-el.className =
-success ? "success" : "error";
+el.className=
+success
+?
+"success"
+:
+"error";
 
 }
 
 
-/* =========================
-   HTML ESCAPE
-========================= */
+/* ESCAPE */
 
 function escapeHTML(value){
 
 return String(value)
+
 .replace(/&/g,"&amp;")
+
 .replace(/</g,"&lt;")
+
 .replace(/>/g,"&gt;")
+
 .replace(/"/g,"&quot;")
+
 .replace(/'/g,"&#039;");
+
+}
+
+
+/* SAFE ID */
+
+function safe(value){
+
+return String(value)
+.replace(/\\/g,"\\\\")
+.replace(/'/g,"\\'");
 
 }
 
