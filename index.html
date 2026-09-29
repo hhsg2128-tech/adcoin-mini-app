@@ -1,29 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1,maximum-scale=1"
->
+<meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1">
 
 <title>AdCoin</title>
 
-
-<!-- Telegram Mini App -->
-
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-
-<!-- Firebase -->
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
 
 <style>
 
@@ -32,458 +21,227 @@ box-sizing:border-box;
 }
 
 body{
-
 margin:0;
-
 background:#07111f;
-
 color:#fff;
-
-font-family:
-Arial,
-sans-serif;
-
+font-family:Arial,sans-serif;
 }
 
 .app{
-
 max-width:480px;
-
 margin:auto;
-
-padding:
-18px
-16px
-95px;
-
+padding:18px 16px 95px;
 }
 
-
-/* TOP */
-
 .top{
-
 display:flex;
-
 align-items:center;
-
 gap:12px;
-
 }
 
 .avatar{
-
 width:48px;
-
 height:48px;
-
 border-radius:50%;
-
 display:grid;
-
 place-items:center;
-
-background:
-linear-gradient(
-135deg,
-#00d4ff,
-#7347ff
-);
-
+background:linear-gradient(135deg,#00d4ff,#7347ff);
 font-weight:bold;
-
 font-size:20px;
-
 }
 
 .name{
-
 font-size:17px;
-
 font-weight:bold;
-
 }
 
 .sub{
-
 color:#8ea0b5;
-
 font-size:12px;
-
 margin-top:3px;
-
 }
-
-
-/* BALANCE */
 
 .balance{
-
 margin-top:18px;
-
 padding:25px;
-
 text-align:center;
-
 border-radius:22px;
-
-background:
-linear-gradient(
-135deg,
-#1769ff,
-#743cff
-);
-
-box-shadow:
-0 10px 30px
-rgba(40,80,255,.20);
-
-}
-
-.balance small{
-
-opacity:.85;
-
+background:linear-gradient(135deg,#1769ff,#743cff);
 }
 
 .balance h1{
-
 font-size:44px;
-
 margin:8px 0;
-
 }
 
-
-/* CARD */
-
 .card{
-
 background:#0e1b2b;
-
-border:
-1px solid
-#1c3048;
-
+border:1px solid #1c3048;
 border-radius:20px;
-
 padding:19px;
-
 margin-top:16px;
-
 }
 
 .card h2{
-
 margin-top:0;
-
 }
 
-
-/* BUTTON */
-
 .btn{
-
 width:100%;
-
 padding:14px;
-
 margin-top:14px;
-
 border:0;
-
 border-radius:14px;
-
 font-weight:bold;
-
 font-size:15px;
-
 cursor:pointer;
-
 }
 
 .primary{
-
 background:#00d084;
-
 color:#001b10;
-
 }
 
 .secondary{
-
 background:#17283b;
-
 color:#fff;
-
 }
 
-
-/* GRID */
+.btn:disabled{
+opacity:.6;
+}
 
 .grid{
-
 display:grid;
-
-grid-template-columns:
-1fr 1fr;
-
+grid-template-columns:1fr 1fr;
 gap:12px;
-
 margin-top:16px;
-
 }
 
 .tile{
-
 background:#0e1b2b;
-
-border:
-1px solid
-#1c3048;
-
+border:1px solid #1c3048;
 border-radius:18px;
-
 padding:17px;
-
 }
 
-
-/* NAV */
-
 .nav{
-
 position:fixed;
-
 bottom:0;
-
 left:0;
-
 right:0;
-
 background:#091624;
-
-border-top:
-1px solid
-#1c3048;
-
+border-top:1px solid #1c3048;
 display:flex;
-
 justify-content:space-around;
-
 padding:9px 5px;
-
 z-index:100;
-
 }
 
 .nav button{
-
 background:none;
-
 border:0;
-
 color:#8293a8;
-
 font-size:11px;
-
 padding:5px;
-
 cursor:pointer;
-
 }
 
 .nav button.active{
-
 color:#fff;
-
 }
 
-
-/* PAGES */
-
 .page{
-
 display:none;
-
 }
 
 .page.active{
-
 display:block;
-
 }
-
-
-/* INPUT */
 
 input,
 select{
-
 width:100%;
-
 padding:13px;
-
 margin-top:9px;
-
 background:#081522;
-
 color:#fff;
-
-border:
-1px solid
-#29405a;
-
+border:1px solid #29405a;
 border-radius:10px;
-
 outline:none;
-
 }
 
-
-/* BAN */
-
 .banned{
-
 background:#35151d;
-
-border:
-1px solid
-#71303c;
-
+border:1px solid #71303c;
 border-radius:20px;
-
 padding:25px;
-
 margin-top:20px;
-
 text-align:center;
-
 }
 
 .banned h2{
-
 color:#ff7180;
-
 margin-top:0;
-
 }
 
 .reason{
-
 background:#24131a;
-
 border-radius:12px;
-
 padding:14px;
-
 margin-top:16px;
-
 text-align:left;
-
 }
 
 .reason-title{
-
 color:#ff9aa5;
-
 font-size:13px;
-
 margin-bottom:6px;
-
 }
 
 .support{
-
 display:block;
-
 background:#2388ff;
-
 color:#fff;
-
 text-decoration:none;
-
 padding:14px;
-
 border-radius:13px;
-
 margin-top:18px;
-
 font-weight:bold;
-
 }
-
-
-/* MESSAGE */
 
 .message{
-
 margin-top:10px;
-
 padding:12px;
-
 border-radius:10px;
-
 background:#101f31;
-
 color:#9eb0c5;
-
 font-size:13px;
-
 }
-
-
-/* HIDDEN */
 
 .hidden{
-
 display:none !important;
-
-}
-
-
-/* LOADING */
-
-.loader{
-
-text-align:center;
-
-padding:30px;
-
-color:#8ea0b5;
-
 }
 
 </style>
 
 </head>
 
-
 <body>
-
 
 <div class="app">
 
-
-<!-- ========================== -->
 <!-- HEADER -->
-<!-- ========================== -->
 
 <div class="top">
 
-<div
-class="avatar"
-id="avatar"
->
+<div class="avatar" id="avatar">
 A
 </div>
 
 <div>
 
-<div
-class="name"
-id="name"
->
+<div class="name" id="name">
 Guest
 </div>
 
@@ -496,26 +254,17 @@ AdCoin Mini App
 </div>
 
 
-<!-- ========================== -->
 <!-- BAN SCREEN -->
-<!-- ========================== -->
 
-<div
-id="banBox"
-class="banned hidden"
->
+<div id="banBox" class="banned hidden">
 
 <h2>
 🚫 Account Banned
 </h2>
 
 <p class="sub">
-
-Your account has been restricted
-by the administrator.
-
+Your account has been restricted by the administrator.
 </p>
-
 
 <div class="reason">
 
@@ -529,43 +278,30 @@ No reason provided.
 
 </div>
 
-
 <a
 class="support"
 href="https://t.me/tohid14"
 target="_blank"
 >
-
 💬 Contact Support @tohid14
-
 </a>
 
-
-<p class="sub"
-style="margin-top:15px">
-
+<p class="sub" style="margin-top:15px">
 If you think this ban is a mistake,
 contact our support team.
-
 </p>
 
 </div>
 
 
-<!-- ========================== -->
 <!-- NORMAL APP -->
-<!-- ========================== -->
 
 <div id="normalApp">
 
 
 <!-- HOME -->
 
-<section
-id="home"
-class="page active"
->
-
+<section id="home" class="page active">
 
 <div class="balance">
 
@@ -591,23 +327,16 @@ Available Balance
 </h2>
 
 <p class="sub">
-
-Watch a rewarded advertisement
-and earn coins.
-
+Watch a rewarded advertisement and earn coins.
 </p>
-
 
 <button
 class="btn primary"
 id="watchButton"
 onclick="watchAd()"
 >
-
 ▶ Watch Ad
-
 </button>
-
 
 <div
 id="adMessage"
@@ -617,7 +346,7 @@ class="message hidden"
 </div>
 
 
-<!-- DAILY -->
+<!-- DAILY BONUS -->
 
 <div class="card">
 
@@ -626,18 +355,14 @@ class="message hidden"
 </h2>
 
 <p class="sub">
-
 Claim your daily reward.
-
 </p>
 
 <button
 class="btn secondary"
 onclick="dailyBonus()"
 >
-
 🎁 Claim Daily Bonus
-
 </button>
 
 </div>
@@ -686,18 +411,12 @@ Ads Watched
 
 </div>
 
-
 </section>
 
 
-<!-- ========================== -->
 <!-- REFERRAL -->
-<!-- ========================== -->
 
-<section
-id="refer"
-class="page"
->
+<section id="refer" class="page">
 
 <div class="card">
 
@@ -706,42 +425,29 @@ class="page"
 </h2>
 
 <p class="sub">
-
-Invite friends and earn
-referral rewards.
-
+Invite friends and earn referral rewards.
 </p>
-
 
 <input
 id="refLink"
 readonly
 >
 
-
 <button
 class="btn primary"
 onclick="copyReferral()"
 >
-
 📋 Copy Referral Link
-
 </button>
-
 
 </div>
 
 </section>
 
 
-<!-- ========================== -->
 <!-- WITHDRAW -->
-<!-- ========================== -->
 
-<section
-id="withdraw"
-class="page"
->
+<section id="withdraw" class="page">
 
 <div class="card">
 
@@ -750,35 +456,23 @@ class="page"
 </h2>
 
 <p class="sub">
-
-Minimum withdrawal is controlled
-by the Admin Panel.
-
+Minimum withdrawal is controlled by the Admin Panel.
 </p>
-
 
 <select id="withdrawMethod">
 
-<option>
-bKash
-</option>
+<option>bKash</option>
 
-<option>
-Nagad
-</option>
+<option>Nagad</option>
 
-<option>
-USDT
-</option>
+<option>USDT</option>
 
 </select>
-
 
 <input
 id="withdrawAccount"
 placeholder="Account / Wallet"
 >
-
 
 <input
 id="withdrawAmount"
@@ -786,30 +480,21 @@ type="number"
 placeholder="Amount"
 >
 
-
 <button
 class="btn primary"
 onclick="withdraw()"
 >
-
 💸 Submit Withdrawal
-
 </button>
-
 
 </div>
 
 </section>
 
 
-<!-- ========================== -->
 <!-- HISTORY -->
-<!-- ========================== -->
 
-<section
-id="history"
-class="page"
->
+<section id="history" class="page">
 
 <div class="card">
 
@@ -818,9 +503,7 @@ class="page"
 </h2>
 
 <p class="sub">
-
 No transactions yet.
-
 </p>
 
 </div>
@@ -828,21 +511,15 @@ No transactions yet.
 </section>
 
 
-<!-- ========================== -->
 <!-- PROFILE -->
-<!-- ========================== -->
 
-<section
-id="profile"
-class="page"
->
+<section id="profile" class="page">
 
 <div class="card">
 
 <h2>
 👤 Profile
 </h2>
-
 
 <p class="sub">
 Name
@@ -852,103 +529,76 @@ Name
 Guest
 </b>
 
-
-<p class="sub"
-style="margin-top:20px">
-
+<p class="sub" style="margin-top:20px">
 Telegram ID
-
 </p>
 
 <b id="telegramId">
 -
 </b>
 
-
 </div>
 
 </section>
 
-
 </div>
 
 
-<!-- ========================== -->
 <!-- NAVIGATION -->
-<!-- ========================== -->
 
-<nav
-id="bottomNav"
-class="nav"
->
+<nav id="bottomNav" class="nav">
 
 <button
 class="active"
 onclick="openPage('home',this)"
 >
-
 🏠
 <br>
 Home
-
 </button>
-
 
 <button
 onclick="openPage('refer',this)"
 >
-
 👥
 <br>
 Refer
-
 </button>
-
 
 <button
 onclick="openPage('withdraw',this)"
 >
-
 💸
 <br>
 Withdraw
-
 </button>
-
 
 <button
 onclick="openPage('history',this)"
 >
-
 📜
 <br>
 History
-
 </button>
-
 
 <button
 onclick="openPage('profile',this)"
 >
-
 👤
 <br>
 Profile
-
 </button>
 
 </nav>
-
 
 </div>
 
 
 <script>
 
-
-/* ==================================================
-   FIREBASE CONFIG
-================================================== */
+/* ==========================================
+FIREBASE CONFIG
+========================================== */
 
 const firebaseConfig = {
 
@@ -979,22 +629,16 @@ measurementId:
 };
 
 
-firebase.initializeApp(
-firebaseConfig
-);
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
 
 
-const db =
-firebase.database();
+/* ==========================================
+TELEGRAM
+========================================== */
 
-
-/* ==================================================
-   TELEGRAM
-================================================== */
-
-const tg =
-window.Telegram.WebApp;
-
+const tg = window.Telegram.WebApp;
 
 tg.ready();
 
@@ -1023,10 +667,6 @@ telegramUser.username ||
 
 }else{
 
-/*
-Demo browser mode
-*/
-
 userId =
 "demo_user";
 
@@ -1036,19 +676,17 @@ userName =
 }
 
 
-/* ==================================================
-   UI
-================================================== */
+/* ==========================================
+USER UI
+========================================== */
 
 document.getElementById("name")
 .textContent =
 userName;
 
-
 document.getElementById("profileName")
 .textContent =
 userName;
-
 
 document.getElementById("telegramId")
 .textContent =
@@ -1058,55 +696,45 @@ userId
 :
 "Demo";
 
-
 document.getElementById("avatar")
 .textContent =
-userName
-.charAt(0)
-.toUpperCase();
+userName.charAt(0).toUpperCase();
 
 
-/* ==================================================
-   REFERRAL
-================================================== */
+/* ==========================================
+REFERRAL
+========================================== */
 
 document.getElementById("refLink")
 .value =
-"https://t.me/free_erning_bot?start="
-+
+"https://t.me/free_erning_bot?start=" +
 userId;
 
 
-/* ==================================================
-   BAN STATE
-================================================== */
+/* ==========================================
+BAN
+========================================== */
 
 let isBanned = false;
 
 
-/* ==================================================
-   USER DATABASE
-================================================== */
+/* ==========================================
+USER DATABASE
+========================================== */
 
 const userRef =
-db.ref(
-"users/" + userId
-);
+db.ref("users/" + userId);
 
 
-userRef.on(
-"value",
-function(snapshot){
+userRef.on("value", function(snapshot){
 
 const user =
 snapshot.val() || {};
 
 
-/* BAN */
+/* CHECK BAN */
 
-if(
-user.banned === true
-){
+if(user.banned === true){
 
 showBanScreen(
 user.banReason
@@ -1117,7 +745,7 @@ return;
 }
 
 
-/* ACTIVE */
+/* USER ACTIVE */
 
 isBanned = false;
 
@@ -1126,39 +754,28 @@ hideBanScreen();
 
 /* BALANCE */
 
-document.getElementById(
-"balance"
-).textContent =
-Number(
-user.balance || 0
-);
+document.getElementById("balance")
+.textContent =
+Number(user.balance || 0);
 
 
 /* ADS */
 
-document.getElementById(
-"ads"
-).textContent =
-Number(
-user.totalAds || 0
-);
+document.getElementById("ads")
+.textContent =
+Number(user.totalAds || 0);
 
 
 /* REFERRALS */
 
-document.getElementById(
-"refs"
-).textContent =
-Number(
-user.referrals || 0
-);
+document.getElementById("refs")
+.textContent =
+Number(user.referrals || 0);
 
 
-/* NEW USER */
+/* CREATE NEW USER */
 
-if(
-!snapshot.exists()
-){
+if(!snapshot.exists()){
 
 userRef.set({
 
@@ -1187,9 +804,9 @@ createdAt:Date.now()
 });
 
 
-/* ==================================================
-   BAN SCREEN
-================================================== */
+/* ==========================================
+BAN SCREEN
+========================================== */
 
 function showBanScreen(reason){
 
@@ -1223,15 +840,13 @@ document
 }
 
 
-/* ==================================================
-   HIDE BAN
-================================================== */
+/* ==========================================
+HIDE BAN
+========================================== */
 
 function hideBanScreen(){
 
-if(
-!isBanned
-){
+if(!isBanned){
 
 document
 .getElementById("banBox")
@@ -1255,15 +870,13 @@ document
 }
 
 
-/* ==================================================
-   BAN CHECK
-================================================== */
+/* ==========================================
+BAN CHECK
+========================================== */
 
 function checkBan(){
 
-if(
-isBanned
-){
+if(isBanned){
 
 alert(
 "🚫 Your account is banned.\n\n" +
@@ -1279,31 +892,22 @@ return false;
 }
 
 
-/* ==================================================
-   PAGE
-================================================== */
+/* ==========================================
+PAGE NAVIGATION
+========================================== */
 
-function openPage(
-page,
-button
-){
+function openPage(page,button){
 
-if(
-checkBan()
-){
-
+if(checkBan()){
 return;
-
 }
 
 
 document
 .querySelectorAll(".page")
-.forEach(
-function(el){
+.forEach(function(el){
 
-el.classList
-.remove("active");
+el.classList.remove("active");
 
 });
 
@@ -1316,53 +920,47 @@ document
 
 document
 .querySelectorAll(".nav button")
-.forEach(
-function(el){
+.forEach(function(el){
 
-el.classList
-.remove("active");
+el.classList.remove("active");
 
 });
 
 
-button.classList
-.add("active");
+button.classList.add("active");
 
 }
 
 
-/* ==================================================
-   ADSGRAM
-================================================== */
-
+/* ==========================================
+ADSGRAM BLOCK ID
+========================================== */
 
 /*
-   YOUR ADSGRAM BLOCK ID
+IMPORTANT:
+Block ID MUST be STRING.
+
+Your Block ID:
+50759
 */
 
-const ADSGRAM_BLOCK_ID =
-50759;
+const ADSGRAM_BLOCK_ID = "50759";
 
 
 let adLoading = false;
 
 
-/*
-   Load AdsGram SDK dynamically
-*/
+/* ==========================================
+LOAD ADSGRAM
+========================================== */
 
 function loadAdsGram(){
 
-return new Promise(
-function(resolve,reject){
+return new Promise(function(resolve,reject){
 
-if(
-window.Adsgram
-){
+if(window.Adsgram){
 
-resolve(
-window.Adsgram
-);
+resolve(window.Adsgram);
 
 return;
 
@@ -1370,14 +968,8 @@ return;
 
 
 const script =
-document.createElement(
-"script"
-);
+document.createElement("script");
 
-
-/*
-   AdsGram SDK
-*/
 
 script.src =
 "https://sad.adsgram.ai/js/sad.min.js";
@@ -1386,13 +978,9 @@ script.src =
 script.onload =
 function(){
 
-if(
-window.Adsgram
-){
+if(window.Adsgram){
 
-resolve(
-window.Adsgram
-);
+resolve(window.Adsgram);
 
 }else{
 
@@ -1419,36 +1007,26 @@ new Error(
 };
 
 
-document.head.appendChild(
-script
-);
+document.head.appendChild(script);
 
 });
 
 }
 
 
-/* ==================================================
-   WATCH AD
-================================================== */
+/* ==========================================
+WATCH AD
+========================================== */
 
 async function watchAd(){
 
-if(
-checkBan()
-){
-
+if(checkBan()){
 return;
-
 }
 
 
-if(
-adLoading
-){
-
+if(adLoading){
 return;
-
 }
 
 
@@ -1456,15 +1034,11 @@ adLoading = true;
 
 
 const button =
-document.getElementById(
-"watchButton"
-);
+document.getElementById("watchButton");
 
 
 const message =
-document.getElementById(
-"adMessage"
-);
+document.getElementById("adMessage");
 
 
 button.disabled = true;
@@ -1473,9 +1047,7 @@ button.textContent =
 "⏳ Loading Ad...";
 
 
-message.classList
-.remove("hidden");
-
+message.classList.remove("hidden");
 
 message.textContent =
 "Preparing advertisement...";
@@ -1484,19 +1056,18 @@ message.textContent =
 try{
 
 
+/* Load SDK */
+
 const Adsgram =
 await loadAdsGram();
 
 
-/*
-   Create AdsGram controller
-*/
+/* Initialize block */
 
 const AdController =
 Adsgram.init({
 
-blockId:
-ADSGRAM_BLOCK_ID
+blockId: ADSGRAM_BLOCK_ID
 
 });
 
@@ -1505,9 +1076,7 @@ message.textContent =
 "📺 Showing advertisement...";
 
 
-/*
-   Show Reward Ad
-*/
+/* Show Reward Ad */
 
 const result =
 await AdController.show();
@@ -1520,25 +1089,25 @@ result
 
 
 /*
-   IMPORTANT:
-   Do NOT directly increase
-   Firebase balance here.
+IMPORTANT:
 
-   First test the ad.
+Ad completed successfully.
+
+Do not directly increase
+Firebase balance from frontend.
 */
 
 message.textContent =
-"✅ Advertisement completed successfully!";
+"✅ Advertisement completed!";
 
 
 alert(
-"✅ Ad completed!\n\n" +
-"Reward system will be connected securely."
+"✅ Ad completed successfully!\n\n" +
+"Reward system is ready for secure backend integration."
 );
 
 
 }catch(error){
-
 
 console.error(
 "AdsGram Error:",
@@ -1551,13 +1120,12 @@ message.textContent =
 
 
 alert(
-"❌ Ad could not be shown.\n\n" +
-"Please try again later."
+"❌ AdsGram Error\n\n" +
+(error.message || error)
 );
 
 
 }finally{
-
 
 adLoading = false;
 
@@ -1566,46 +1134,37 @@ button.disabled = false;
 button.textContent =
 "▶ Watch Ad";
 
-
 }
 
 }
 
 
-/* ==================================================
-   DAILY BONUS
-================================================== */
+/* ==========================================
+DAILY BONUS
+========================================== */
 
 function dailyBonus(){
 
-if(
-checkBan()
-){
-
+if(checkBan()){
 return;
-
 }
 
 
 alert(
-"🎁 Daily Bonus will be connected next."
+"🎁 Daily Bonus system will be connected next."
 );
 
 }
 
 
-/* ==================================================
-   WITHDRAW
-================================================== */
+/* ==========================================
+WITHDRAW
+========================================== */
 
 function withdraw(){
 
-if(
-checkBan()
-){
-
+if(checkBan()){
 return;
-
 }
 
 
@@ -1618,8 +1177,7 @@ document.getElementById(
 const account =
 document.getElementById(
 "withdrawAccount"
-).value
-.trim();
+).value.trim();
 
 
 const amount =
@@ -1630,10 +1188,7 @@ document.getElementById(
 );
 
 
-if(
-!account ||
-!amount
-){
+if(!account || !amount){
 
 alert(
 "Please enter account and amount."
@@ -1645,46 +1200,32 @@ return;
 
 
 alert(
-"💸 Withdrawal system will be connected securely."
+"💸 Withdrawal system will be connected next."
 );
 
 }
 
 
-/* ==================================================
-   REFERRAL COPY
-================================================== */
+/* ==========================================
+COPY REFERRAL
+========================================== */
 
 function copyReferral(){
 
-if(
-checkBan()
-){
-
+if(checkBan()){
 return;
-
 }
 
 
-const input =
-document.getElementById(
-"refLink"
-);
+const link =
+document.getElementById("refLink").value;
 
 
-input.select();
-
-
-if(
-navigator.clipboard
-){
+if(navigator.clipboard){
 
 navigator.clipboard
-.writeText(
-input.value
-)
-.then(
-function(){
+.writeText(link)
+.then(function(){
 
 alert(
 "✅ Referral link copied!"
@@ -1694,39 +1235,13 @@ alert(
 
 }else{
 
-alert(
-input.value
-);
+alert(link);
 
 }
 
 }
-
-
-/* ==================================================
-   PREVENT BASIC CHEAT
-================================================== */
-
-document.addEventListener(
-"visibilitychange",
-function(){
-
-if(
-document.hidden
-){
-
-console.log(
-"App hidden"
-);
-
-}
-
-});
-
 
 </script>
 
-
 </body>
-
-  </html>
+</html>
